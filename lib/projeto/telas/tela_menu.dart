@@ -47,14 +47,6 @@ class MenuPrincipalPage extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, Rotas.alugueis),
             ),
           ),
-          Card(
-            child: ListTile(
-              title: Text('Sair', style: TextStyle(color: Colors.white)),
-              trailing: Icon(Icons.exit_to_app, color: Colors.orange[600]),
-              onTap: () =>
-                  Navigator.pushReplacementNamed(context, Rotas.dashboard),
-            ),
-          ),
         ],
       ),
     );
