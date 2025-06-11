@@ -15,4 +15,4 @@ Cadastro com associação (1:N) – 3 pontos cada
 Cadastro associativa (N:N) – 6 pontos cada
 	- Cliente × Veículo via Aluguel. Um cliente pode alugar vários veículos, e um veículo pode ser alugado por vários clientes. (ver se consegue implementar um histórico de clientes que alugol o veiculo)
 
-	- Cliente × Veículo via Revisão. Um carro pode passar por varias revisões e uma revisão pode ser feita em vários carros. (implementar uma tela onde mostra os tipos de revisões que um carro teve e uma tela para mostrar todos os carros que passaram por um tipo de revisão).
+	- Veículo x Revisão. Um carro pode passar por varias revisões e uma revisão pode ser feita em vários carros. (implementar uma tela onde mostra os tipos de revisões que um carro teve e uma tela para mostrar todos os carros que passaram por um tipo de revisão).
