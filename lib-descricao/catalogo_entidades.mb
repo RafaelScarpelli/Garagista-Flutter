@@ -6,13 +6,16 @@ Cadastro simples – 1 ponto cada (máximo de 5 pts)
 	- Cadastro da revisão para o veiculo
 
 Cadastro com associação (1:N) – 3 pontos cada
-	- Cliente x Venda. Um cliente pode realizar várias vendas (comprar vários carros ao longo do tempo) e uma venda pertence a apenas um cliente
+	- Cliente x Venda. Um cliente pode realizar várias vendas e uma venda pertence a apenas um cliente
 	
-	- Veículo x Venda. Um veículo pode estar envolvido em apenas uma venda (foi vendido uma única vez) e uma venda está ligada a um veículo
+	- Veículo x Aluguel. Um veículo pode ser alugado várias vezes
 
-	- Marca x Veículo. Uma marca pode ter vários veículos e cada veículo pertence a uma única marca
+	- Cliente x Aluguel. Um cliente alugar vários veículos
 
 Cadastro associativa (N:N) – 6 pontos cada
 	- Cliente × Veículo via Aluguel. Um cliente pode alugar vários veículos, e um veículo pode ser alugado por vários clientes. (ver se consegue implementar um histórico de clientes que alugol o veiculo)
 
-	- Veículo x Revisão. Um carro pode passar por varias revisões e uma revisão pode ser feita em vários carros. (implementar uma tela onde mostra os tipos de revisões que um carro teve e uma tela para mostrar todos os carros que passaram por um tipo de revisão).
+	- Cliente × Veículo via Revisão. Um cliente pode solicitar revisões para vários veículos diferentes. Um veículo pode passar por várias revisões solicitadas por diferentes clientes.
+		. Exemplo: o cliente está em dúvida entre 3 modelos — ele solicita uma revisão em cada um deles.
+		. Exemplo: o carro pode ser avaliado por 5 clientes diferentes em momentos diferentes.
+
