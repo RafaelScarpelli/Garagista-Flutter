@@ -1,17 +1,21 @@
 class Aluguel {
-  final String veiculoModelo;
-  final String veiculoPlaca;
-  final String clienteNome;
-  final String dataInicio;
-  final String dataFim;
-  final double valorDiario;
+  int? id;
+  int clienteId;
+  int veiculoId;
+  DateTime dataInicio;
+  DateTime dataFim;
+  double valorDiaria;
+  double valorTotal;
+  String status;
 
   Aluguel({
-    required this.veiculoModelo,
-    required this.veiculoPlaca,
-    required this.clienteNome,
+    this.id,
+    required this.clienteId,
+    required this.veiculoId,
     required this.dataInicio,
     required this.dataFim,
-    required this.valorDiario,
+    required this.valorDiaria,
+    required this.valorTotal,
+    required this.status,
   });
 }

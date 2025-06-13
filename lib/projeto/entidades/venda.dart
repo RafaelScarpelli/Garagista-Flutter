@@ -1,15 +1,15 @@
 class Venda {
-  final String veiculoModelo;
-  final String veiculoPlaca;
-  final String clienteNome;
-  final double valor;
-  final String data;
+  int? id;
+  int clienteId;
+  int veiculoId;
+  DateTime dataVenda;
+  double valor;
 
   Venda({
-    required this.veiculoModelo,
-    required this.veiculoPlaca,
-    required this.clienteNome,
+    this.id,
+    required this.clienteId,
+    required this.veiculoId,
+    required this.dataVenda,
     required this.valor,
-    required this.data,
   });
 }
