@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_ddm/projeto/entidades/cliente.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_cliente.dart';
+import 'package:projeto_ddm/projeto/dto/cliente.dart';
+import 'package:projeto_ddm/projeto/dto/lista_cliente.dart';
 import '../rotas.dart';
 
 class ClientesPage extends StatelessWidget {

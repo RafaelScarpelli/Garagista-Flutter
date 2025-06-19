@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_ddm/projeto/entidades/aluguel.dart';
-import 'package:projeto_ddm/projeto/entidades/cliente.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_aluguel.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_cliente.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_veiculo.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_venda.dart';
-import 'package:projeto_ddm/projeto/entidades/veiculo.dart';
-import 'package:projeto_ddm/projeto/entidades/venda.dart';
+import 'package:projeto_ddm/projeto/dto/aluguel.dart';
+import 'package:projeto_ddm/projeto/dto/cliente.dart';
+import 'package:projeto_ddm/projeto/dto/lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/dto/lista_cliente.dart';
+import 'package:projeto_ddm/projeto/dto/lista_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/lista_venda.dart';
+import 'package:projeto_ddm/projeto/dto/veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/venda.dart';
 import '../rotas.dart';
 
 class VendasPage extends StatelessWidget {

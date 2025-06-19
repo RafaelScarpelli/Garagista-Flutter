@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_cliente.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_veiculo.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_venda.dart';
-import 'package:projeto_ddm/projeto/entidades/venda.dart';
+import 'package:projeto_ddm/projeto/dto/lista_cliente.dart';
+import 'package:projeto_ddm/projeto/dto/lista_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/lista_venda.dart';
+import 'package:projeto_ddm/projeto/dto/venda.dart';
 
 class CadastrarVendaPage extends StatefulWidget {
   @override

@@ -1,66 +1,110 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_veiculo.dart';
+import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/veiculo.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 
-class ListaVeiculosPage extends StatelessWidget {
-  final ListaVeiculo _listaVeiculo = ListaVeiculo();
+class TelaListaVeiculos extends StatefulWidget {
+  const TelaListaVeiculos({super.key});
+
+  @override
+  State<TelaListaVeiculos> createState() => _TelaListaVeiculosState();
+}
+
+class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
+  Future<List<Veiculo>> _carregarVeiculos() async {
+    final dao = DAOVeiculo();
+    try {
+      return await dao.consultarTodos();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao carregar veículos: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final veiculos = _listaVeiculo.getVeiculos();
-
-    return Scaffold(
-      appBar: AppBar(title: Text('Veículos')),
-      backgroundColor: Colors.grey[900],
-      body: veiculos.isEmpty
-          ? Center(
-              child: Text(
-                'Nenhum veículo registrado',
-                style: TextStyle(color: Colors.grey[300], fontSize: 18),
-              ),
-            )
-          : ListView.builder(
-              padding: EdgeInsets.all(16.0),
+    return Theme(
+      data: ThemeData.dark().copyWith(
+        primaryColor: Colors.green[600],
+        colorScheme: ColorScheme.dark(
+          primary: Colors.green[600]!,
+          secondary: Colors.orange[600]!,
+        ),
+        scaffoldBackgroundColor: Colors.grey[900],
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.green[600],
+          foregroundColor: Colors.white,
+        ),
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Lista de Veículos'),
+        ),
+        body: FutureBuilder<List<Veiculo>>(
+          future: _carregarVeiculos(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return const Center(child: Text('Erro ao carregar veículos'));
+            }
+            final veiculos = snapshot.data ?? [];
+            if (veiculos.isEmpty) {
+              return const Center(child: Text('Nenhum veículo cadastrado'));
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.all(8),
               itemCount: veiculos.length,
               itemBuilder: (context, index) {
                 final veiculo = veiculos[index];
                 return Card(
-                  color: Colors.grey[800],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.orange[600]!, width: 1.5),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  color: Colors.grey[850],
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(16.0),
                     title: Text(
                       '${veiculo.marca} ${veiculo.modelo}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Placa: ${veiculo.placa} | Status: ${veiculo.status}',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                    trailing: Text(
+                      'R\$ ${veiculo.tipo == 'Venda' ? veiculo.valorVenda.toStringAsFixed(2) : veiculo.valorAluguelDia.toStringAsFixed(2)}',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.orange[600],
+                      ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 8),
-                        Text('Ano: ${veiculo.ano}',
-                            style: TextStyle(color: Colors.grey[300])),
-                        Text('Cor: ${veiculo.cor}',
-                            style: TextStyle(color: Colors.grey[300])),
-                        Text('Placa: ${veiculo.placa}',
-                            style: TextStyle(color: Colors.grey[300])),
-                        Text('Status: ${veiculo.status}',
-                            style: TextStyle(color: Colors.grey[300])),
-                      ],
-                    ),
-                    leading: Icon(Icons.directions_car,
-                        color: Colors.green[600], size: 40),
                   ),
                 );
               },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/cadastrar_veiculo'),
-        backgroundColor: Colors.green[600],
-        child: Icon(Icons.add, color: Colors.white),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.orange[600],
+          foregroundColor: Colors.white,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TelaCadastrarVeiculo(),
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

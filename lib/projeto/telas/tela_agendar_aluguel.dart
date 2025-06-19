@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto_ddm/projeto/entidades/aluguel.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_aluguel.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_cliente.dart';
-import 'package:projeto_ddm/projeto/entidades/lista_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/aluguel.dart';
+import 'package:projeto_ddm/projeto/dto/lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/dto/lista_cliente.dart';
+import 'package:projeto_ddm/projeto/dto/lista_veiculo.dart';
 
 class AgendarAluguelPage extends StatefulWidget {
   @override

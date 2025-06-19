@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: Colors.grey[800],
           elevation: 4,
           shape:
@@ -80,8 +80,8 @@ class MyApp extends StatelessWidget {
       routes: {
         Rotas.dashboard: (context) => DashboardPage(),
         Rotas.menu: (context) => MenuPrincipalPage(),
-        Rotas.listar_veiculos: (context) => ListaVeiculosPage(),
-        Rotas.cadastrar_veiculo: (context) => CadastrarVeiculoPage(),
+        Rotas.listar_veiculos: (context) => TelaListaVeiculos(),
+        Rotas.cadastrar_veiculo: (context) => TelaCadastrarVeiculo(),
         Rotas.vendas: (context) => VendasPage(),
         Rotas.alugueis: (context) => AlugueisPage(),
         Rotas.clientes: (context) => ClientesPage(),
