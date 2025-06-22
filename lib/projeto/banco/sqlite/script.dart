@@ -19,9 +19,15 @@ final criarTabelas = [_veiculo];
 
 final insertVeiculos = [
   '''
-INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa) VALUES
-    ('Toyota', 'Corolla', 2020, 'Prata', 35000.0, 'Venda', 90000.0, 0.0, 'Disponível', '2025-01-10T00:00:00.000', 'ABC-1234'),
-    ('Honda', 'Civic', 2019, 'Preto', 45000.0, 'Aluguel', 0.0, 200.0, 'Alugado', '2025-02-15T00:00:00.000', 'DEF-5678'),
-    ('Ford', 'Focus', 2018, 'Azul', 60000.0, 'Ambos', 75000.0, 150.0, 'Disponível', '2025-03-20T00:00:00.000', 'GHI-9012');
-'''
+  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES ('Toyota', 'Corolla', 2020, 'Prata', 35000.0, 'Venda', 90000.0, 0.0, 'Disponível', '2025-01-10T00:00:00.000', 'ABC-1234')
+  ''',
+  '''
+  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES ('Honda', 'Civic', 2019, 'Preto', 45000.0, 'Aluguel', 0.0, 200.0, 'Alugado', '2025-02-15T00:00:00.000', 'DEF-5678')
+  ''',
+  '''
+  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES ('Ford', 'Focus', 2018, 'Azul', 60000.0, 'Ambos', 75000.0, 150.0, 'Disponível', '2025-03-20T00:00:00.000', 'GHI-9012')
+  '''
 ];

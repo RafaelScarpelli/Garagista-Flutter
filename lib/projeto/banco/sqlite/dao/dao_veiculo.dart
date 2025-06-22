@@ -20,6 +20,14 @@ class DAOVeiculo {
     DELETE FROM veiculo WHERE id = ?
   ''';
 
+  final String _sqlAtualizar = '''
+    UPDATE veiculo SET
+      marca = ?, modelo = ?, ano = ?, cor = ?, quilometragem = ?,
+      tipo = ?, valor_venda = ?, valor_aluguel_dia = ?, status = ?,
+      data_cadastro = ?, placa = ?
+    WHERE id = ?
+  ''';
+
   Future<Veiculo> _fromMap(Map<String, dynamic> map) async {
     return Veiculo(
       id: map['id'],
@@ -73,6 +81,28 @@ class DAOVeiculo {
       ]);
     } catch (e) {
       throw Exception('Erro ao salvar veículo: $e');
+    }
+  }
+
+  Future<void> atualizar(Veiculo veiculo) async {
+    final db = await Conexao.get();
+    try {
+      await db.rawUpdate(_sqlAtualizar, [
+        veiculo.marca,
+        veiculo.modelo,
+        veiculo.ano,
+        veiculo.cor,
+        veiculo.quilometragem,
+        veiculo.tipo,
+        veiculo.valorVenda,
+        veiculo.valorAluguelDia,
+        veiculo.status,
+        veiculo.dataCadastro.toIso8601String(),
+        veiculo.placa,
+        veiculo.id,
+      ]);
+    } catch (e) {
+      throw Exception('Erro ao atualizar veículo: $e');
     }
   }
 

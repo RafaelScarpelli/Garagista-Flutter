@@ -4,9 +4,9 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_veiculo.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
 
-
 class TelaCadastrarVeiculo extends StatefulWidget {
-  const TelaCadastrarVeiculo({super.key});
+  final Veiculo? veiculo;
+  const TelaCadastrarVeiculo({super.key, this.veiculo});
 
   @override
   State<TelaCadastrarVeiculo> createState() => _TelaCadastrarVeiculoState();
@@ -27,8 +27,14 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
 
   final _placaFormatter = MaskTextInputFormatter(
     mask: 'AAA-####',
-    filter: {'A': RegExp(r'[A-Z]'), '#': RegExp(r'[0-9]')},
+    filter: {
+      'A': RegExp(r'[A-Z]'),
+      '#': RegExp(r'[0-9]'),
+      '-': RegExp(r'[-]'),
+    },
+    type: MaskAutoCompletionType.eager,
   );
+
   final _anoFormatter = MaskTextInputFormatter(
     mask: '####',
     filter: {'#': RegExp(r'[0-9]')},
@@ -36,6 +42,23 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
 
   final _tipoOpcoes = ['Venda', 'Aluguel', 'Ambos'];
   final _statusOpcoes = ['Disponível', 'Vendido', 'Alugado', 'Em Revisão'];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.veiculo != null) {
+      _marcaController.text = widget.veiculo!.marca;
+      _modeloController.text = widget.veiculo!.modelo;
+      _anoController.text = widget.veiculo!.ano.toString();
+      _corController.text = widget.veiculo!.cor;
+      _quilometragemController.text = widget.veiculo!.quilometragem.toString();
+      _valorVendaController.text = widget.veiculo!.valorVenda.toString();
+      _valorAluguelDiaController.text = widget.veiculo!.valorAluguelDia.toString();
+      _placaController.text = widget.veiculo!.placa;
+      _tipoSelecionado = widget.veiculo!.tipo;
+      _statusSelecionado = widget.veiculo!.status;
+    }
+  }
 
   @override
   void dispose() {
@@ -50,10 +73,11 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
     super.dispose();
   }
 
-  Future<void> _cadastrarVeiculo() async {
+  Future<void> _salvarOuAtualizarVeiculo() async {
     if (_formKey.currentState!.validate()) {
       try {
         final veiculo = Veiculo(
+          id: widget.veiculo?.id,
           marca: _marcaController.text.trim(),
           modelo: _modeloController.text.trim(),
           ano: int.parse(_anoController.text),
@@ -63,17 +87,23 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
           valorVenda: double.parse(_valorVendaController.text),
           valorAluguelDia: double.parse(_valorAluguelDiaController.text),
           status: _statusSelecionado!,
-          dataCadastro: DateTime.now(),
+          dataCadastro: widget.veiculo?.dataCadastro ?? DateTime.now(),
           placa: _placaController.text,
         );
 
         final dao = DAOVeiculo();
-        await dao.salvar(veiculo);
+        if (widget.veiculo == null) {
+          await dao.salvar(veiculo);
+        } else {
+          await dao.atualizar(veiculo);
+        }
 
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Veículo cadastrado com sucesso!'),
+          SnackBar(
+            content: Text(widget.veiculo == null
+                ? 'Veículo cadastrado com sucesso!'
+                : 'Veículo atualizado com sucesso!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -86,7 +116,7 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao cadastrar veículo: $e'),
+            content: Text('Erro ao ${widget.veiculo == null ? 'cadastrar' : 'atualizar'} veículo: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -124,7 +154,7 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cadastrar Veículo'),
+          title: Text(widget.veiculo == null ? 'Cadastrar Veículo' : 'Editar Veículo'),
           backgroundColor: Colors.green[600],
         ),
         body: SingleChildScrollView(
@@ -242,14 +272,16 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                   inputFormatters: [_placaFormatter],
                   validator: (value) {
                     if (value!.trim().isEmpty) return 'Informe a placa';
-                    if (!_placaFormatter.isFill()) return 'Placa inválida (AAA-1234)';
+                    // Validar formato AAA-1111
+                    final placaValida = RegExp(r'^[A-Z]{3}-[0-9]{4}$').hasMatch(value);
+                    if (!placaValida) return 'Placa inválida (ex.: AAA-1111)';
                     return null;
                   },
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _cadastrarVeiculo,
-                  child: const Text('Cadastrar'),
+                  onPressed: _salvarOuAtualizarVeiculo,
+                  child: Text(widget.veiculo == null ? 'Cadastrar' : 'Atualizar'),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

@@ -28,6 +28,47 @@ class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
     }
   }
 
+  Future<void> _excluirVeiculo(int id, String placa) async {
+    bool? confirmar = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar Exclusão'),
+        content: Text('Deseja excluir o veículo com placa $placa?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmar == true) {
+      try {
+        final dao = DAOVeiculo();
+        await dao.excluir(id);
+        setState(() {}); // Atualiza a lista
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Veículo excluído com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao excluir veículo: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -80,11 +121,40 @@ class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
                       'Placa: ${veiculo.placa} | Status: ${veiculo.status}',
                       style: const TextStyle(color: Colors.white70),
                     ),
-                    trailing: Text(
-                      'R\$ ${veiculo.tipo == 'Venda' ? veiculo.valorVenda.toStringAsFixed(2) : veiculo.valorAluguelDia.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        color: Colors.orange[600],
-                      ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'R\$ ${veiculo.tipo == 'Venda' ? veiculo.valorVenda.toStringAsFixed(2) : veiculo.valorAluguelDia.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: Colors.orange[600],
+                          ),
+                        ),
+                        PopupMenuButton<String>(
+                          onSelected: (value) {
+                            if (value == 'editar') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TelaCadastrarVeiculo(veiculo: veiculo),
+                                ),
+                              );
+                            } else if (value == 'excluir') {
+                              _excluirVeiculo(veiculo.id!, veiculo.placa);
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              value: 'editar',
+                              child: Text('Editar'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'excluir',
+                              child: Text('Excluir', style: TextStyle(color: Colors.red)),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );
