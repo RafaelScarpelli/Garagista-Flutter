@@ -4,7 +4,6 @@ class Cliente {
   String cpf;
   String telefone;
   String email;
-  String endereco;
   DateTime dataCadastro;
 
   Cliente({
@@ -13,7 +12,6 @@ class Cliente {
     required this.cpf,
     required this.telefone,
     required this.email,
-    required this.endereco,
     required this.dataCadastro,
   });
 }

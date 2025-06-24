@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/rotas.dart';
-import 'package:projeto_ddm/projeto/telas/tela_agendar_aluguel.dart';
-import 'package:projeto_ddm/projeto/telas/tela_alugueis.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_vendas.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_dashboard.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
 import 'package:projeto_ddm/projeto/telas/tela_menu.dart';
-import 'package:projeto_ddm/projeto/telas/tela_vendas.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -82,12 +78,12 @@ class MyApp extends StatelessWidget {
         Rotas.menu: (context) => MenuPrincipalPage(),
         Rotas.listar_veiculos: (context) => TelaListaVeiculos(),
         Rotas.cadastrar_veiculo: (context) => TelaCadastrarVeiculo(),
-        Rotas.vendas: (context) => VendasPage(),
-        Rotas.alugueis: (context) => AlugueisPage(),
-        Rotas.clientes: (context) => ClientesPage(),
-        Rotas.cadastrar_venda: (context) => CadastrarVendaPage(),
-        Rotas.agendar_aluguel: (context) => AgendarAluguelPage(),
-        Rotas.cadastrar_cliente: (context) => CadastrarClientePage(),
+        //Rotas.vendas: (context) => VendasPage(),
+        //Rotas.alugueis: (context) => AlugueisPage(),
+        //Rotas.cadastrar_venda: (context) => CadastrarVendaPage(),
+        //Rotas.agendar_aluguel: (context) => AgendarAluguelPage(),
+        Rotas.cadastrar_cliente: (context) => TelaCadastrarCliente(),
+        Rotas.listar_clientes: (context) => TelaListaClientes(),
       },
     );
   }
