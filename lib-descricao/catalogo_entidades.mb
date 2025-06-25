@@ -1,21 +1,24 @@
 Cadastro simples – 1 ponto cada (máximo de 5 pts)
 	- Cadastro de cliente
-	- Cadastro de Veiuclo
-	- Cadastro de Venda
-	- Cadastro de Agendamento
+	- Cadastro de veiuclo
+	- Cadastro da venda de um carro
 	- Cadastro da revisão para o veiculo
+	- Cadastro de estado
 
 Cadastro com associação (1:N) – 3 pontos cada
 	- Cliente x Venda. Um cliente pode realizar várias vendas e uma venda pertence a apenas um cliente
-	
-	- Veículo x Aluguel. Um veículo pode ser alugado várias vezes
 
-	- Cliente x Aluguel. Um cliente alugar vários veículos
+	- Cadastro de endereço
+
+	- Cadastro de cidade
 
 Cadastro associativa (N:N) – 6 pontos cada
-	- Cliente × Veículo via Aluguel. Um cliente pode alugar vários veículos, e um veículo pode ser alugado por vários clientes. (ver se consegue implementar um histórico de clientes que alugol o veiculo)
+	- Cliente × Veículo via Aluguel. A Aluguel é a tabela intermediaria entre Cliente e veículo
 
-	- Cliente × Veículo via Revisão. Um cliente pode solicitar revisões para vários veículos diferentes. Um veículo pode passar por várias revisões solicitadas por diferentes clientes.
-		. Exemplo: o cliente está em dúvida entre 3 modelos — ele solicita uma revisão em cada um deles.
-		. Exemplo: o carro pode ser avaliado por 5 clientes diferentes em momentos diferentes.
+	- Agendamento_Revisão x Tipo_Revisão:
+		class AgendamentoRevisaoTipo {
+  			int id;
+  			int agendamentoId;
+  			int tipoRevisaoId;
+		}  
 
