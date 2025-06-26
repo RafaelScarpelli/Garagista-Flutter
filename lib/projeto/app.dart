@@ -78,12 +78,8 @@ class MyApp extends StatelessWidget {
         Rotas.menu: (context) => MenuPrincipalPage(),
         Rotas.listar_veiculos: (context) => TelaListaVeiculos(),
         Rotas.cadastrar_veiculo: (context) => TelaCadastrarVeiculo(),
-        //Rotas.vendas: (context) => VendasPage(),
-        //Rotas.alugueis: (context) => AlugueisPage(),
-        //Rotas.cadastrar_venda: (context) => CadastrarVendaPage(),
-        //Rotas.agendar_aluguel: (context) => AgendarAluguelPage(),
-        Rotas.cadastrar_cliente: (context) => TelaCadastrarCliente(),
         Rotas.listar_clientes: (context) => TelaListaClientes(),
+        Rotas.cadastrar_cliente: (context) => TelaCadastrarCliente(),
       },
     );
   }
