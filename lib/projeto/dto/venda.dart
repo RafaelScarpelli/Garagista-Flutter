@@ -1,14 +1,14 @@
 class Venda {
   int? id;
   int clienteId;
-  int veiculoId;
+  List<int> veiculoIds;
   DateTime dataVenda;
   double valor;
 
   Venda({
     this.id,
     required this.clienteId,
-    required this.veiculoId,
+    required this.veiculoIds,
     required this.dataVenda,
     required this.valor,
   });

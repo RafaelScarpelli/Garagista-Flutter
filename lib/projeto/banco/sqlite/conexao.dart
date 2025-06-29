@@ -32,6 +32,12 @@ class Conexao {
           for (final insert in insertClientes) {
             await db.execute(insert);
           }
+          for (final insert in insertVendas) {
+            await db.execute(insert);
+          }
+          for (final insert in insertVendaVeiculo) {
+            await db.execute(insert);
+          }
         },
       );
 
