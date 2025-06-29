@@ -1,3 +1,5 @@
+# Catalago de Entidades
+
 Cadastro simples – 1 ponto cada (máximo de 5 pts)
 	- Cadastro de cliente
 	- Cadastro de veiuclo
