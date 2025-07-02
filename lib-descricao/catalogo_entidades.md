@@ -3,16 +3,17 @@
 Cadastro simples – 1 ponto cada (máximo de 5 pts)
 	- Cadastro de cliente
 	- Cadastro de veiuclo
-	- Cadastro da venda de um carro
 	- Cadastro da revisão para o veiculo
-	- Cadastro de estado
+	- Cadastro de estado*
 
 Cadastro com associação (1:N) – 3 pontos cada
 	- Cliente x Venda. Um cliente pode realizar várias vendas e uma venda pertence a apenas um cliente
 
-	- Cadastro de endereço
+	- Cadastro da venda de um carro
 
-	- Cadastro de cidade
+	- Cadastro de cidade*
+
+	- Cadastro de Endereço*
 
 Cadastro associativa (N:N) – 6 pontos cada
 	- Cliente × Veículo via Aluguel. A Aluguel é a tabela intermediaria entre Cliente e veículo

@@ -20,7 +20,8 @@ class MenuPrincipalPage extends StatelessWidget {
         cardTheme: CardThemeData(
           color: Colors.grey[800],
           elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
       ),
@@ -34,7 +35,8 @@ class MenuPrincipalPage extends StatelessWidget {
                 title: const Text('Listar Veículos',
                     style: TextStyle(color: Colors.white)),
                 trailing: Icon(Icons.directions_car, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_veiculos),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_veiculos),
               ),
             ),
             Card(
@@ -51,7 +53,8 @@ class MenuPrincipalPage extends StatelessWidget {
                 title: const Text('Listar Clientes',
                     style: TextStyle(color: Colors.white)),
                 trailing: Icon(Icons.person, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_clientes),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_clientes),
               ),
             ),
             Card(
@@ -68,15 +71,15 @@ class MenuPrincipalPage extends StatelessWidget {
                 title: const Text('Listar Vendas',
                     style: TextStyle(color: Colors.white)),
                 trailing: Icon(Icons.shopping_cart, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_vendas),
+                onTap: () => Navigator.pushNamed(context, Rotas.listar_vendas),
               ),
             ),
             Card(
               child: ListTile(
                 title: const Text('Cadastrar Venda',
                     style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_shopping_cart, color: Colors.green[600]),
+                trailing:
+                    Icon(Icons.add_shopping_cart, color: Colors.green[600]),
                 onTap: () =>
                     Navigator.pushNamed(context, Rotas.cadastrar_venda),
               ),

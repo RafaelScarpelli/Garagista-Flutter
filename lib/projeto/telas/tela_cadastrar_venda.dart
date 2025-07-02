@@ -47,10 +47,12 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
     }
     if (widget.venda != null) {
       _valorController.text = widget.venda!.valor.toString();
-      _dataVendaController.text = DateFormat('dd/MM/yyyy').format(widget.venda!.dataVenda);
+      _dataVendaController.text =
+          DateFormat('dd/MM/yyyy').format(widget.venda!.dataVenda);
     } else {
       _valorController.text = '';
-      _dataVendaController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
+      _dataVendaController.text =
+          DateFormat('dd/MM/yyyy').format(DateTime.now());
     }
 
     await _carregarClientes();
@@ -77,7 +79,9 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao carregar clientes: $e'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Erro ao carregar clientes: $e'),
+              backgroundColor: Colors.red),
         );
       }
     }
@@ -86,14 +90,16 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
   Future<void> _carregarVeiculos() async {
     final dao = DAOVeiculo();
     try {
-      final veiculos = await dao.consultarTodos();
+      final allVeiculos = await dao.consultarTodos();
       setState(() {
-        _veiculos = veiculos;
+        _veiculos = allVeiculos.where((v) => v.status == 'disponível').toList();
       });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao carregar veículos: $e'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Erro ao carregar veículos: $e'),
+              backgroundColor: Colors.red),
         );
       }
     }
@@ -118,10 +124,18 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
         );
 
         final dao = DAOVenda();
+        final daoVeiculo = DAOVeiculo();
+
+        // Salva ou atualiza a venda
         if (widget.venda == null) {
           await dao.salvar(venda);
         } else {
           await dao.atualizar(venda);
+        }
+
+        // Atualiza o status dos veículos para "vendido"
+        for (var veiculoId in _veiculosSelecionados.map((v) => v.id!)) {
+          await daoVeiculo.atualizarStatus(veiculoId, 'vendido');
         }
 
         if (!mounted) return;
@@ -142,7 +156,8 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao ${widget.venda == null ? 'cadastrar' : 'atualizar'} venda: $e'),
+            content: Text(
+                'Erro ao ${widget.venda == null ? 'cadastrar' : 'atualizar'} venda: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -157,7 +172,7 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
-        lastDate: DateTime(2025, 12, 31), // Ajustado para o final de 2025
+        lastDate: DateTime(2025, 12, 31),
       );
       print('Data selecionada: $picked');
       if (picked != null && mounted) {
@@ -183,7 +198,8 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
     if (_isLoading || _clientes.isEmpty || _veiculos.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.venda == null ? 'Cadastrar Venda' : 'Editar Venda'),
+          title:
+              Text(widget.venda == null ? 'Cadastrar Venda' : 'Editar Venda'),
           backgroundColor: Colors.green[600],
         ),
         body: const Center(
@@ -220,7 +236,8 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.venda == null ? 'Cadastrar Venda' : 'Editar Venda'),
+          title:
+              Text(widget.venda == null ? 'Cadastrar Venda' : 'Editar Venda'),
           backgroundColor: Colors.green[600],
         ),
         body: SingleChildScrollView(
@@ -239,18 +256,18 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
                             child: Text(cliente.nome),
                           ))
                       .toList(),
-                  onChanged: (value) => setState(() => _clienteSelecionado = value),
-                  validator: (value) => value == null ? 'Selecione um cliente' : null,
+                  onChanged: (value) =>
+                      setState(() => _clienteSelecionado = value),
+                  validator: (value) =>
+                      value == null ? 'Selecione um cliente' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _dataVendaController,
-                  decoration: const InputDecoration(labelText: 'Data da Venda (dd/mm/aaaa)'),
+                  decoration: const InputDecoration(
+                      labelText: 'Data da Venda (dd/mm/aaaa)'),
                   readOnly: true,
-                  onTap: () {
-                    print('Clicou no campo de data');
-                    _selecionarData(context);
-                  },
+                  onTap: () => _selecionarData(context),
                   validator: (value) {
                     if (value!.trim().isEmpty) return 'Informe a data da venda';
                     try {
@@ -275,28 +292,34 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<Veiculo>(
-                  decoration: const InputDecoration(labelText: 'Selecionar Veículos'),
+                  decoration:
+                      const InputDecoration(labelText: 'Selecionar Veículos'),
                   items: _veiculos
                       .map((veiculo) => DropdownMenuItem(
                             value: veiculo,
-                            child: Text('${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})'),
+                            child: Text(
+                                '${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})'),
                           ))
                       .toList(),
                   onChanged: (veiculo) {
-                    if (veiculo != null && !_veiculosSelecionados.contains(veiculo)) {
+                    if (veiculo != null &&
+                        !_veiculosSelecionados.contains(veiculo)) {
                       setState(() {
                         _veiculosSelecionados.add(veiculo);
                       });
                     }
                   },
-                  validator: (value) => _veiculosSelecionados.isEmpty ? 'Selecione pelo menos um veículo' : null,
+                  validator: (value) => _veiculosSelecionados.isEmpty
+                      ? 'Selecione pelo menos um veículo'
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 if (_veiculosSelecionados.isNotEmpty)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Veículos Selecionados:', style: TextStyle(color: Colors.white70)),
+                      const Text('Veículos Selecionados:',
+                          style: TextStyle(color: Colors.white70)),
                       ..._veiculosSelecionados
                           .asMap()
                           .entries
@@ -306,7 +329,8 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 trailing: IconButton(
-                                  icon: const Icon(Icons.remove_circle, color: Colors.red),
+                                  icon: const Icon(Icons.remove_circle,
+                                      color: Colors.red),
                                   onPressed: () {
                                     setState(() {
                                       _veiculosSelecionados.removeAt(entry.key);

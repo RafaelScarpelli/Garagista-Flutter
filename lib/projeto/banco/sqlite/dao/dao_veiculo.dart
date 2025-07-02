@@ -109,7 +109,8 @@ class DAOVeiculo {
   Future<List<Veiculo>> consultarTodos() async {
     final db = await Conexao.get();
     try {
-      final List<Map<String, dynamic>> maps = await db.rawQuery(_sqlConsultarTodos);
+      final List<Map<String, dynamic>> maps =
+          await db.rawQuery(_sqlConsultarTodos);
       return Future.wait(maps.map((map) => _fromMap(map)));
     } catch (e) {
       throw Exception('Erro ao consultar veículos: $e');
@@ -119,7 +120,8 @@ class DAOVeiculo {
   Future<Veiculo?> consultarPorId(int id) async {
     final db = await Conexao.get();
     try {
-      final List<Map<String, dynamic>> maps = await db.rawQuery(_sqlConsultarPorId, [id]);
+      final List<Map<String, dynamic>> maps =
+          await db.rawQuery(_sqlConsultarPorId, [id]);
       if (maps.isNotEmpty) {
         return await _fromMap(maps.first);
       }
@@ -135,6 +137,20 @@ class DAOVeiculo {
       await db.rawDelete(_sqlExcluir, [id]);
     } catch (e) {
       throw Exception('Erro ao excluir veículo: $e');
+    }
+  }
+
+  Future<void> atualizarStatus(int veiculoId, String novoStatus) async {
+    final db = await Conexao.get();
+    try {
+      await db.rawUpdate(
+        '''
+      UPDATE veiculo SET status = ? WHERE id = ?
+      ''',
+        [novoStatus, veiculoId],
+      );
+    } catch (e) {
+      throw Exception('Erro ao atualizar status do veículo: $e');
     }
   }
 }

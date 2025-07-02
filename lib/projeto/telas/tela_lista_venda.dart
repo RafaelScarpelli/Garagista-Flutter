@@ -50,44 +50,47 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
     return nomes.join(', ');
   }
 
-  Future<void> _excluirVenda(int id) async {
-    bool? confirmar = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirmar Exclusão'),
-        content: const Text('Deseja excluir esta venda?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Excluir', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
+  Future<void> _excluirVenda(int vendaId) async {
+    try {
+      final dao = DAOVenda();
+      final daoVeiculo = DAOVeiculo();
 
-    if (confirmar == true) {
-      try {
-        final dao = DAOVenda();
-        await dao.excluir(id);
-        setState(() {});
+      // Primeiro, consultar a venda para obter os veiculoIds
+      final venda = await dao.consultarPorId(vendaId);
+      if (venda != null) {
+        // Reverte o status dos veículos para "disponível"
+        for (var veiculoId in venda.veiculoIds) {
+          await daoVeiculo.atualizarStatus(veiculoId, 'disponível');
+        }
+
+        await dao.excluir(vendaId);
+
+        setState(() {
+          // Remover a venda da lista (assumindo que _vendas é uma lista de estado)
+          _vendas.removeWhere((v) => v.id == vendaId);
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Venda excluída com sucesso!'),
             backgroundColor: Colors.green,
           ),
         );
-      } catch (e) {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao excluir venda: $e'),
+          const SnackBar(
+            content: Text('Venda não encontrada.'),
             backgroundColor: Colors.red,
           ),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao excluir venda: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -141,8 +144,8 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
         );
       }
 
-      print('Erro no try Cliente ID: ${venda.clienteId}, Veículo IDs: ${venda.veiculoIds}');
-
+      print(
+          'Erro no try Cliente ID: ${venda.clienteId}, Veículo IDs: ${venda.veiculoIds}');
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -153,6 +156,22 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
         );
       }
     }
+  }
+
+  // Adicione a lista de vendas como estado
+  late List<Venda> _vendas;
+
+  @override
+  void initState() {
+    super.initState();
+    _vendas = [];
+    _carregarVendas().then((vendas) {
+      if (mounted) {
+        setState(() {
+          _vendas = vendas;
+        });
+      }
+    });
   }
 
   @override
@@ -174,82 +193,69 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
         appBar: AppBar(
           title: const Text('Lista de Vendas'),
         ),
-        body: FutureBuilder<List<Venda>>(
-          future: _carregarVendas(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return const Center(child: Text('Erro ao carregar vendas'));
-            }
-            final vendas = snapshot.data ?? [];
-            if (vendas.isEmpty) {
-              return const Center(child: Text('Nenhuma venda cadastrada'));
-            }
-            return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: vendas.length,
-              itemBuilder: (context, index) {
-                final venda = vendas[index];
-                return Card(
-                  color: Colors.grey[850],
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    title: FutureBuilder<String>(
-                      future: _getClienteNome(venda.clienteId),
-                      builder: (context, snapshot) {
-                        return Text(
-                          'Cliente: ${snapshot.data ?? 'Carregando...'}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      },
+        body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: _vendas.length,
+          itemBuilder: (context, index) {
+            final venda = _vendas[index];
+            return Card(
+              color: Colors.grey[850],
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: ListTile(
+                title: FutureBuilder<String>(
+                  future: _getClienteNome(venda.clienteId),
+                  builder: (context, snapshot) {
+                    return Text(
+                      'Cliente: ${snapshot.data ?? 'Carregando...'}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
+                ),
+                subtitle: FutureBuilder<String>(
+                  future: _getVeiculosNomes(venda.veiculoIds),
+                  builder: (context, snapshot) {
+                    return Text(
+                      'Veículos: ${snapshot.data ?? 'Carregando...'}\nData: ${DateFormat('dd/MM/yyyy').format(venda.dataVenda)}',
+                      style: const TextStyle(color: Colors.white70),
+                    );
+                  },
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'R\$ ${venda.valor.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Colors.orange[600],
+                      ),
                     ),
-                    subtitle: FutureBuilder<String>(
-                      future: _getVeiculosNomes(venda.veiculoIds),
-                      builder: (context, snapshot) {
-                        return Text(
-                          'Veículos: ${snapshot.data ?? 'Carregando...'}\nData: ${DateFormat('dd/MM/yyyy').format(venda.dataVenda)}',
-                          style: const TextStyle(color: Colors.white70),
-                        );
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'editar') {
+                          _editarVenda(venda);
+                        } else if (value == 'excluir') {
+                          _excluirVenda(
+                              venda.id!); // Agora compatível com o novo tipo
+                        }
                       },
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'R\$ ${venda.valor.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            color: Colors.orange[600],
-                          ),
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'editar',
+                          child: Text('Editar'),
                         ),
-                        PopupMenuButton<String>(
-                          onSelected: (value) {
-                            if (value == 'editar') {
-                              _editarVenda(venda);
-                            } else if (value == 'excluir') {
-                              _excluirVenda(venda.id!);
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              value: 'editar',
-                              child: Text('Editar'),
-                            ),
-                            const PopupMenuItem(
-                              value: 'excluir',
-                              child: Text('Excluir', style: TextStyle(color: Colors.red)),
-                            ),
-                          ],
+                        const PopupMenuItem(
+                          value: 'excluir',
+                          child: Text('Excluir',
+                              style: TextStyle(color: Colors.red)),
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ),
             );
           },
         ),

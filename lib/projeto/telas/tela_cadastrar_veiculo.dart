@@ -41,7 +41,7 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
   );
 
   final _tipoOpcoes = ['Venda', 'Aluguel', 'Ambos'];
-  final _statusOpcoes = ['Disponível', 'Vendido', 'Alugado', 'Em Revisão'];
+  final _statusOpcoes = ['disponível', 'vendido', 'alugado', 'revisão'];
 
   @override
   void initState() {
@@ -53,7 +53,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
       _corController.text = widget.veiculo!.cor;
       _quilometragemController.text = widget.veiculo!.quilometragem.toString();
       _valorVendaController.text = widget.veiculo!.valorVenda.toString();
-      _valorAluguelDiaController.text = widget.veiculo!.valorAluguelDia.toString();
+      _valorAluguelDiaController.text =
+          widget.veiculo!.valorAluguelDia.toString();
       _placaController.text = widget.veiculo!.placa;
       _tipoSelecionado = widget.veiculo!.tipo;
       _statusSelecionado = widget.veiculo!.status;
@@ -116,7 +117,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao ${widget.veiculo == null ? 'cadastrar' : 'atualizar'} veículo: $e'),
+            content: Text(
+                'Erro ao ${widget.veiculo == null ? 'cadastrar' : 'atualizar'} veículo: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -154,7 +156,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.veiculo == null ? 'Cadastrar Veículo' : 'Editar Veículo'),
+          title: Text(
+              widget.veiculo == null ? 'Cadastrar Veículo' : 'Editar Veículo'),
           backgroundColor: Colors.green[600],
         ),
         body: SingleChildScrollView(
@@ -202,7 +205,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _quilometragemController,
-                  decoration: const InputDecoration(labelText: 'Quilometragem (km)'),
+                  decoration:
+                      const InputDecoration(labelText: 'Quilometragem (km)'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.trim().isEmpty) return 'Informe a quilometragem';
@@ -221,17 +225,20 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                             child: Text(tipo),
                           ))
                       .toList(),
-                  onChanged: (value) => setState(() => _tipoSelecionado = value),
+                  onChanged: (value) =>
+                      setState(() => _tipoSelecionado = value),
                   validator: (value) =>
                       value == null ? 'Selecione o tipo' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _valorVendaController,
-                  decoration: const InputDecoration(labelText: 'Valor de Venda (R\$)'),
+                  decoration:
+                      const InputDecoration(labelText: 'Valor de Venda (R\$)'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
-                    if (value!.trim().isEmpty) return 'Informe o valor de venda';
+                    if (value!.trim().isEmpty)
+                      return 'Informe o valor de venda';
                     final valor = double.tryParse(value);
                     if (valor == null || valor < 0) return 'Valor inválido';
                     return null;
@@ -240,7 +247,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _valorAluguelDiaController,
-                  decoration: const InputDecoration(labelText: 'Valor de Aluguel/Dia (R\$)'),
+                  decoration: const InputDecoration(
+                      labelText: 'Valor de Aluguel/Dia (R\$)'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
@@ -261,7 +269,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                             child: Text(status),
                           ))
                       .toList(),
-                  onChanged: (value) => setState(() => _statusSelecionado = value),
+                  onChanged: (value) =>
+                      setState(() => _statusSelecionado = value),
                   validator: (value) =>
                       value == null ? 'Selecione o status' : null,
                 ),
@@ -273,7 +282,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                   validator: (value) {
                     if (value!.trim().isEmpty) return 'Informe a placa';
                     // Validar formato AAA-1111
-                    final placaValida = RegExp(r'^[A-Z]{3}-[0-9]{4}$').hasMatch(value);
+                    final placaValida =
+                        RegExp(r'^[A-Z]{3}-[0-9]{4}$').hasMatch(value);
                     if (!placaValida) return 'Placa inválida (ex.: AAA-1111)';
                     return null;
                   },
@@ -281,7 +291,8 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _salvarOuAtualizarVeiculo,
-                  child: Text(widget.veiculo == null ? 'Cadastrar' : 'Atualizar'),
+                  child:
+                      Text(widget.veiculo == null ? 'Cadastrar' : 'Atualizar'),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
