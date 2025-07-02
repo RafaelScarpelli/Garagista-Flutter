@@ -84,6 +84,20 @@ class MenuPrincipalPage extends StatelessWidget {
                     Navigator.pushNamed(context, Rotas.cadastrar_venda),
               ),
             ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Aluguéis', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.car_rental_outlined, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.listar_aluguel),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Aluguel', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.app_registration_outlined, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_aluguel),
+              ),
+            ),
           ],
         ),
       ),

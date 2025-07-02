@@ -1,29 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_aluguel.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_cliente.dart';
-import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_venda.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/aluguel.dart';
+import 'package:projeto_ddm/projeto/dto/cliente.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
-import 'package:projeto_ddm/projeto/dto/venda.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_aluguel.dart';
 import 'package:intl/intl.dart';
 
-class TelaListaVenda extends StatefulWidget {
-  const TelaListaVenda({super.key});
+class TelaListaAluguel extends StatefulWidget {
+  const TelaListaAluguel({super.key});
 
   @override
-  State<TelaListaVenda> createState() => _TelaListaVendaState();
+  State<TelaListaAluguel> createState() => _TelaListaAluguelState();
 }
 
-class _TelaListaVendaState extends State<TelaListaVenda> {
-  Future<List<Venda>> _carregarVendas() async {
-    final dao = DAOVenda();
+class _TelaListaAluguelState extends State<TelaListaAluguel> {
+  late List<Aluguel> _alugueis;
+
+  @override
+  void initState() {
+    super.initState();
+    _alugueis = [];
+    _carregarAlugueis().then((alugueis) {
+      if (mounted) {
+        setState(() {
+          _alugueis = alugueis;
+        });
+      }
+    });
+  }
+
+  Future<List<Aluguel>> _carregarAlugueis() async {
+    final dao = DAOAluguel();
     try {
       return await dao.consultarTodos();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao carregar vendas: $e'),
+            content: Text('Erro ao carregar aluguéis: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -38,62 +54,49 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
     return cliente?.nome ?? 'Desconhecido';
   }
 
-  Future<String> _getVeiculosNomes(List<int> veiculoIds) async {
+  Future<String> _getVeiculoNome(int veiculoId) async {
     final dao = DAOVeiculo();
-    final nomes = <String>[];
-    for (final id in veiculoIds) {
-      final veiculo = await dao.consultarPorId(id);
-      if (veiculo != null) {
-        nomes.add('${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})');
-      }
-    }
-    return nomes.join(', ');
+    final veiculo = await dao.consultarPorId(veiculoId);
+    return veiculo != null ? '${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})' : 'Desconhecido';
   }
 
-  Future<void> _excluirVenda(int vendaId) async {
+  Future<void> _excluirAluguel(int aluguelId) async {
     try {
-      final dao = DAOVenda();
+      final dao = DAOAluguel();
       final daoVeiculo = DAOVeiculo();
-      final venda = await dao.consultarPorId(vendaId);
-      if (venda != null) {
-        for (var veiculoId in venda.veiculoIds) {
-          await daoVeiculo.atualizarStatus(veiculoId, 'disponível');
-        }
 
-        await dao.excluir(vendaId);
+      final aluguel = await dao.consultarPorId(aluguelId);
+      if (aluguel != null) {
+        if (aluguel.status == 'ativo') {
+          await daoVeiculo.atualizarStatus(aluguel.veiculoId, 'disponível');
+        }
+        await dao.excluir(aluguelId);
 
         setState(() {
-          _vendas.removeWhere((v) => v.id == vendaId);
+          _alugueis.removeWhere((a) => a.id == aluguelId);
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Venda excluída com sucesso!'),
+            content: Text('Aluguel excluído com sucesso!'),
             backgroundColor: Colors.green,
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Venda não encontrada.'),
-            backgroundColor: Colors.red,
           ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro ao excluir venda: $e'),
+          content: Text('Erro ao excluir aluguel: $e'),
           backgroundColor: Colors.red,
         ),
       );
     }
   }
 
-  void _editarVenda(Venda venda) async {
+  void _editarAluguel(Aluguel aluguel) async {
     try {
       final daoCliente = DAOCliente();
-      final cliente = await daoCliente.consultarPorId(venda.clienteId);
+      final cliente = await daoCliente.consultarPorId(aluguel.clienteId);
       if (cliente == null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -107,19 +110,12 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
       }
 
       final daoVeiculo = DAOVeiculo();
-      final veiculosSelecionados = <Veiculo>[];
-      for (final veiculoId in venda.veiculoIds) {
-        final veiculo = await daoVeiculo.consultarPorId(veiculoId);
-        if (veiculo != null) {
-          veiculosSelecionados.add(veiculo);
-        }
-      }
-
-      if (veiculosSelecionados.isEmpty) {
+      final veiculo = await daoVeiculo.consultarPorId(aluguel.veiculoId);
+      if (veiculo == null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Nenhum veículo encontrado para esta venda.'),
+              content: Text('Veículo não encontrado.'),
               backgroundColor: Colors.red,
             ),
           );
@@ -131,17 +127,14 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TelaCadastrarVenda(
-              venda: venda,
+            builder: (context) => TelaCadastrarAluguel(
+              aluguel: aluguel,
               initialCliente: cliente,
-              initialVeiculos: veiculosSelecionados,
+              initialVeiculo: veiculo,
             ),
           ),
         );
       }
-
-      print(
-          'Erro no try Cliente ID: ${venda.clienteId}, Veículo IDs: ${venda.veiculoIds}');
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -152,21 +145,6 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
         );
       }
     }
-  }
-
-  late List<Venda> _vendas;
-
-  @override
-  void initState() {
-    super.initState();
-    _vendas = [];
-    _carregarVendas().then((vendas) {
-      if (mounted) {
-        setState(() {
-          _vendas = vendas;
-        });
-      }
-    });
   }
 
   @override
@@ -186,19 +164,19 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Vendas'),
+          title: const Text('Lista de Aluguéis'),
         ),
         body: ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: _vendas.length,
+          itemCount: _alugueis.length,
           itemBuilder: (context, index) {
-            final venda = _vendas[index];
+            final aluguel = _alugueis[index];
             return Card(
               color: Colors.grey[850],
               margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
                 title: FutureBuilder<String>(
-                  future: _getClienteNome(venda.clienteId),
+                  future: _getClienteNome(aluguel.clienteId),
                   builder: (context, snapshot) {
                     return Text(
                       'Cliente: ${snapshot.data ?? 'Carregando...'}',
@@ -210,10 +188,10 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
                   },
                 ),
                 subtitle: FutureBuilder<String>(
-                  future: _getVeiculosNomes(venda.veiculoIds),
+                  future: _getVeiculoNome(aluguel.veiculoId),
                   builder: (context, snapshot) {
                     return Text(
-                      'Veículos: ${snapshot.data ?? 'Carregando...'}\nData: ${DateFormat('dd/MM/yyyy').format(venda.dataVenda)}',
+                      'Veículo: ${snapshot.data ?? 'Carregando...'}\nPeríodo: ${DateFormat('dd/MM/yyyy').format(aluguel.dataInicio)} - ${DateFormat('dd/MM/yyyy').format(aluguel.dataFim)}\nStatus: ${aluguel.status}',
                       style: const TextStyle(color: Colors.white70),
                     );
                   },
@@ -222,18 +200,15 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'R\$ ${venda.valor.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        color: Colors.orange[600],
-                      ),
+                      'R\$ ${aluguel.valorTotal.toStringAsFixed(2)}',
+                      style: TextStyle(color: Colors.orange[600]),
                     ),
                     PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'editar') {
-                          _editarVenda(venda);
+                          _editarAluguel(aluguel);
                         } else if (value == 'excluir') {
-                          _excluirVenda(
-                              venda.id!);
+                          _excluirAluguel(aluguel.id!);
                         }
                       },
                       itemBuilder: (context) => [
@@ -243,8 +218,7 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
                         ),
                         const PopupMenuItem(
                           value: 'excluir',
-                          child: Text('Excluir',
-                              style: TextStyle(color: Colors.red)),
+                          child: Text('Excluir', style: TextStyle(color: Colors.red)),
                         ),
                       ],
                     ),
@@ -261,7 +235,7 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const TelaCadastrarVenda(),
+                builder: (context) => const TelaCadastrarAluguel(),
               ),
             );
           },

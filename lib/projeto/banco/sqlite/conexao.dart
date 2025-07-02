@@ -17,7 +17,7 @@ class Conexao {
       }
 
       final path = join(await getDatabasesPath(), 'banco.db');
-      // await deleteDatabase(path); // Comment out to persist data
+      // await deleteDatabase(path);
 
       _db = await openDatabase(
         path,

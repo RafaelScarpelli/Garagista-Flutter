@@ -46,7 +46,22 @@ CREATE TABLE venda_veiculo (
 );
 ''';
 
-final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo];
+final _aluguel = '''
+CREATE TABLE aluguel (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cliente_id INTEGER NOT NULL,
+    veiculo_id INTEGER NOT NULL,
+    data_inicio TEXT NOT NULL,
+    data_fim TEXT NOT NULL,
+    valor_diaria REAL NOT NULL,
+    valor_total REAL NOT NULL,
+    status TEXT NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id),
+    FOREIGN KEY (veiculo_id) REFERENCES veiculo(id)
+);
+''';
+
+final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel];
 
 final insertVeiculos = [
   '''

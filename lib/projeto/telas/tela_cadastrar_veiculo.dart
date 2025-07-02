@@ -281,7 +281,6 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                   inputFormatters: [_placaFormatter],
                   validator: (value) {
                     if (value!.trim().isEmpty) return 'Informe a placa';
-                    // Validar formato AAA-1111
                     final placaValida =
                         RegExp(r'^[A-Z]{3}-[0-9]{4}$').hasMatch(value);
                     if (!placaValida) return 'Placa inválida (ex.: AAA-1111)';

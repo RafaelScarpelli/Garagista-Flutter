@@ -2,7 +2,7 @@
 
 Cadastro simples – 1 ponto cada (máximo de 5 pts)
 	- Cadastro de cliente
-	- Cadastro de veiuclo
+	- Cadastro de veiculo
 	- Cadastro da revisão para o veiculo
 	- Cadastro de estado*
 

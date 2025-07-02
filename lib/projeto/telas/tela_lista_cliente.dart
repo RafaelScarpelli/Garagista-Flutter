@@ -51,7 +51,7 @@ class _TelaListaClientesState extends State<TelaListaClientes> {
       try {
         final dao = DAOCliente();
         await dao.excluir(id);
-        setState(() {}); // Atualiza a lista
+        setState(() {});
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Cliente excluído com sucesso!'),

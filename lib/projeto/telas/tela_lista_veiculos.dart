@@ -51,7 +51,7 @@ class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
       try {
         final dao = DAOVeiculo();
         await dao.excluir(id);
-        setState(() {}); // Atualiza a lista
+        setState(() {});
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Veículo excluído com sucesso!'),

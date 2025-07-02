@@ -126,14 +126,12 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
         final dao = DAOVenda();
         final daoVeiculo = DAOVeiculo();
 
-        // Salva ou atualiza a venda
         if (widget.venda == null) {
           await dao.salvar(venda);
         } else {
           await dao.atualizar(venda);
         }
 
-        // Atualiza o status dos veículos para "vendido"
         for (var veiculoId in _veiculosSelecionados.map((v) => v.id!)) {
           await daoVeiculo.atualizarStatus(veiculoId, 'vendido');
         }
