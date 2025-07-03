@@ -1,41 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_cliente.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_observacao.dart';
+import 'package:projeto_ddm/projeto/dto/observacao.dart';
 import 'package:projeto_ddm/projeto/dto/cliente.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_observacao.dart';
 
-class TelaListaClientes extends StatefulWidget {
-  const TelaListaClientes({super.key});
+class TelaListaObservacao extends StatefulWidget {
+  const TelaListaObservacao({super.key});
 
   @override
-  State<TelaListaClientes> createState() => _TelaListaClientesState();
+  State<TelaListaObservacao> createState() => _TelaListaObservacaoState();
 }
 
-class _TelaListaClientesState extends State<TelaListaClientes> {
-  late List<Cliente> _clientes;
+class _TelaListaObservacaoState extends State<TelaListaObservacao> {
+  late List<Observacao> _observacoes;
 
   @override
   void initState() {
     super.initState();
-    _clientes = [];
-    _carregarClientes().then((clientes) {
+    _observacoes = [];
+    _carregarObservacoes().then((observacoes) {
       if (mounted) {
         setState(() {
-          _clientes = clientes;
+          _observacoes = observacoes;
         });
       }
     });
   }
 
-  Future<List<Cliente>> _carregarClientes() async {
-    final dao = DAOCliente();
+  Future<List<Observacao>> _carregarObservacoes() async {
+    final dao = DAOObservacao();
     try {
       return await dao.consultarTodos();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao carregar clientes: $e'),
+            content: Text('Erro ao carregar observações: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -44,82 +45,69 @@ class _TelaListaClientesState extends State<TelaListaClientes> {
     }
   }
 
-  Future<void> _excluirCliente(int clienteId) async {
+  Future<String> _getClienteNome(int clienteId) async {
+    final dao = DAOCliente();
+    final cliente = await dao.consultarPorId(clienteId);
+    return cliente?.nome ?? 'Desconhecido';
+  }
+
+  Future<void> _excluirObservacao(int observacaoId) async {
     try {
-      final dao = DAOCliente();
-      await dao.excluir(clienteId);
+      final dao = DAOObservacao();
+      await dao.excluir(observacaoId);
 
       setState(() {
-        _clientes.removeWhere((c) => c.id == clienteId);
+        _observacoes.removeWhere((o) => o.id == observacaoId);
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Cliente excluído com sucesso!'),
+          content: Text('Observação excluída com sucesso!'),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro ao excluir cliente: $e'),
+          content: Text('Erro ao excluir observação: $e'),
           backgroundColor: Colors.red,
         ),
       );
     }
   }
 
-  void _editarCliente(Cliente cliente) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TelaCadastrarCliente(cliente: cliente),
-      ),
-    );
-  }
-
-  void _mostrarObservacoes(int clienteId) async {
+  void _editarObservacao(Observacao observacao) async {
     try {
-      final daoObservacao = DAOObservacao();
-      final observacoes = await daoObservacao.consultarPorClienteId(clienteId);
-
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Observações do Cliente'),
-            content: SizedBox(
-              width: double.maxFinite,
-              child: observacoes.isEmpty
-                  ? const Text('Cliente não possui observações')
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: observacoes.length,
-                      itemBuilder: (context, index) {
-                        final observacao = observacoes[index];
-                        return ListTile(
-                          title: Text(
-                            observacao.mensagem,
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                        );
-                      },
-                    ),
+      final daoCliente = DAOCliente();
+      final cliente = await daoCliente.consultarPorId(observacao.clienteId);
+      if (cliente == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Cliente não encontrado.'),
+              backgroundColor: Colors.red,
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Fechar'),
-              ),
-            ],
           );
-        },
-      );
+        }
+        return;
+      }
+
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TelaCadastrarObservacao(
+              observacao: observacao,
+              initialCliente: cliente,
+            ),
+          ),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao carregar observações: $e'),
+            content: Text('Erro ao carregar dados para edição: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -144,43 +132,42 @@ class _TelaListaClientesState extends State<TelaListaClientes> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Clientes'),
+          title: const Text('Lista de Observações'),
         ),
         body: ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: _clientes.length,
+          itemCount: _observacoes.length,
           itemBuilder: (context, index) {
-            final cliente = _clientes[index];
+            final observacao = _observacoes[index];
             return Card(
               color: Colors.grey[850],
               margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
-                title: Text(
-                  cliente.nome,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                title: FutureBuilder<String>(
+                  future: _getClienteNome(observacao.clienteId),
+                  builder: (context, snapshot) {
+                    return Text(
+                      'Cliente: ${snapshot.data ?? 'Carregando...'}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
                 subtitle: Text(
-                  'CPF: ${cliente.cpf}\nTelefone: ${cliente.telefone}',
+                  'Mensagem: ${observacao.mensagem}',
                   style: const TextStyle(color: Colors.white70),
                 ),
                 trailing: PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'editar') {
-                      _editarCliente(cliente);
+                      _editarObservacao(observacao);
                     } else if (value == 'excluir') {
-                      _excluirCliente(cliente.id!);
-                    } else if (value == 'observacoes') {
-                      _mostrarObservacoes(cliente.id!);
+                      _excluirObservacao(observacao.id!);
                     }
                   },
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'observacoes',
-                      child: Text('Observações'),
-                    ),
                     const PopupMenuItem(
                       value: 'editar',
                       child: Text('Editar'),
@@ -203,7 +190,7 @@ class _TelaListaClientesState extends State<TelaListaClientes> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const TelaCadastrarCliente(),
+                builder: (context) => const TelaCadastrarObservacao(),
               ),
             );
           },

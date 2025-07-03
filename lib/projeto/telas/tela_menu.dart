@@ -86,16 +86,41 @@ class MenuPrincipalPage extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                title: const Text('Listar Aluguéis', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.car_rental_outlined, color: Colors.green[600]),
+                title: const Text('Listar Aluguéis',
+                    style: TextStyle(color: Colors.white)),
+                trailing:
+                    Icon(Icons.car_rental_outlined, color: Colors.green[600]),
                 onTap: () => Navigator.pushNamed(context, Rotas.listar_aluguel),
               ),
             ),
             Card(
               child: ListTile(
-                title: const Text('Cadastrar Aluguel', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.app_registration_outlined, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_aluguel),
+                title: const Text('Cadastrar Aluguel',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.app_registration_outlined,
+                    color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_aluguel),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Observações',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.assignment_ind_rounded,
+                    color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_observacao),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Observação',
+                    style: TextStyle(color: Colors.white)),
+                trailing:
+                    Icon(Icons.announcement_rounded, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_observacao),
               ),
             ),
           ],

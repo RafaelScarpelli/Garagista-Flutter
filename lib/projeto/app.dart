@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/rotas.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_aluguel.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_observacao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_dashboard.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_menu.dart';
@@ -88,6 +90,8 @@ class MyApp extends StatelessWidget {
         Rotas.cadastrar_venda: (context) => TelaCadastrarVenda(),
         Rotas.listar_aluguel: (context) => TelaListaAluguel(),
         Rotas.cadastrar_aluguel: (context) => TelaCadastrarAluguel(),
+        Rotas.listar_observacao: (context) => TelaListaObservacao(),
+        Rotas.cadastrar_observacao: (context) => TelaCadastrarObservacao(),
       },
     );
   }

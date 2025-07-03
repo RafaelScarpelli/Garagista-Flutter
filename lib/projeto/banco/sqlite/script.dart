@@ -61,7 +61,16 @@ CREATE TABLE aluguel (
 );
 ''';
 
-final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel];
+final _observacao = '''
+CREATE TABLE observacao (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cliente_id INTEGER NOT NULL,
+    mensagem TEXT NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+);
+''';
+
+final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel, _observacao];
 
 final insertVeiculos = [
   '''
@@ -94,5 +103,12 @@ final insertVendaVeiculo = [
   '''
   INSERT INTO venda_veiculo (venda_id, veiculo_id)
   VALUES (1, 1)
+  ''',
+];
+
+final insertObservacoes = [
+  '''
+  INSERT INTO observacao (cliente_id, mensagem)
+  VALUES (1, 'Pagamento atrasado')
   ''',
 ];
