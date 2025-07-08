@@ -70,7 +70,15 @@ CREATE TABLE observacao (
 );
 ''';
 
-final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel, _observacao];
+final _revisao = '''
+CREATE TABLE revisao (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tipo TEXT NOT NULL,
+    oficina TEXT NOT NULL
+);
+''';
+
+final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel, _observacao, _revisao];
 
 final insertVeiculos = [
   '''

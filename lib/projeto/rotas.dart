@@ -11,4 +11,6 @@ class Rotas {
   static const String cadastrar_aluguel = '/cadastrar_aluguel';
   static const String listar_observacao = '/listar_observacao';
   static const String cadastrar_observacao = '/cadastrar_observacao';
+  static const String listar_revisao = '/listar_revisao';
+  static const String cadastrar_revisao = '/cadastrar_revisao';
 }

@@ -123,6 +123,20 @@ class MenuPrincipalPage extends StatelessWidget {
                     Navigator.pushNamed(context, Rotas.cadastrar_observacao),
               ),
             ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Revisões', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.build, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.listar_revisao),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Revisão', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.add_box, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_revisao),
+              ),
+            ),
           ],
         ),
       ),
