@@ -78,7 +78,36 @@ CREATE TABLE revisao (
 );
 ''';
 
-final criarTabelas = [_veiculo, _cliente, _venda, _venda_veiculo, _aluguel, _observacao, _revisao];
+final _marca_veiculo = ''' 
+CREATE TABLE marca_veiculo ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    nome TEXT NOT NULL, 
+    site_oficial TEXT NOT NULL 
+); 
+''';
+
+final _fornecedor = ''' 
+CREATE TABLE fornecedor ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    nome TEXT NOT NULL, 
+    cpf TEXT NOT NULL, 
+    telefone TEXT NOT NULL, 
+    email TEXT NOT NULL, 
+    data_cadastro TEXT NOT NULL 
+); 
+''';
+
+final criarTabelas = [
+  _veiculo,
+  _cliente,
+  _venda,
+  _venda_veiculo,
+  _aluguel,
+  _observacao,
+  _revisao,
+  _marca_veiculo,
+  _fornecedor,
+];
 
 final insertVeiculos = [
   '''
@@ -119,4 +148,15 @@ final insertObservacoes = [
   INSERT INTO observacao (cliente_id, mensagem)
   VALUES (1, 'Pagamento atrasado')
   ''',
+];
+
+final insertMarcasVeiculo = [
+  ''' INSERT INTO marca_veiculo (nome, site_oficial) VALUES ('Toyota', 'https://www.toyota.com') ''',
+  ''' INSERT INTO marca_veiculo (nome, site_oficial) VALUES ('Honda', 'https://www.honda.com') ''',
+  ''' INSERT INTO marca_veiculo (nome, site_oficial) VALUES ('Ford', 'https://www.ford.com') ''',
+];
+
+final insertFornecedores = [
+  ''' INSERT INTO fornecedor (nome, cpf, telefone, email, data_cadastro) VALUES ('Auto Peças Silva', '111.222.333-44', '(11) 99876-5432', 'auto.pecas@email.com', '2025-03-10T00:00:00.000') ''',
+  ''' INSERT INTO fornecedor (nome, cpf, telefone, email, data_cadastro) VALUES ('Distribuidora Santos', '555.666.777-88', '(21) 91234-5678', 'dist.santos@email.com', '2025-04-15T00:00:00.000') ''',
 ];

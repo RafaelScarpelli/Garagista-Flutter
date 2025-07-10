@@ -41,6 +41,12 @@ class Conexao {
           for (final insert in insertObservacoes) {
             await db.execute(insert);
           }
+          for (final insert in insertMarcasVeiculo) {
+            await db.execute(insert);
+          }
+          for (final insert in insertFornecedores) {
+            await db.execute(insert);
+          }
         },
       );
 

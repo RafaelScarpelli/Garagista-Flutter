@@ -9,8 +9,12 @@ class Rotas {
   static const String cadastrar_venda = '/cadastrar_venda';
   static const String listar_aluguel = '/listar_aluguel';
   static const String cadastrar_aluguel = '/cadastrar_aluguel';
-  static const String listar_observacao = '/listar_observacao';
+  static const String listar_observacao = '/lstar_observacao';
   static const String cadastrar_observacao = '/cadastrar_observacao';
   static const String listar_revisao = '/listar_revisao';
   static const String cadastrar_revisao = '/cadastrar_revisao';
+  static const String listar_marca_veiculo = '/listar_marca_veiculo';
+  static const String cadastrar_marca_veiculo = '/cadastrar_marca_veiculo';
+  static const String listar_fornecedor = '/listar_fornecedor';
+  static const String cadastrar_fornecedor = '/cadastrar_fornecedor';
 }

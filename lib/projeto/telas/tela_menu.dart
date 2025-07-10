@@ -125,16 +125,55 @@ class MenuPrincipalPage extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                title: const Text('Listar Revisões', style: TextStyle(color: Colors.white)),
+                title: const Text('Listar Revisões',
+                    style: TextStyle(color: Colors.white)),
                 trailing: Icon(Icons.build, color: Colors.green[600]),
                 onTap: () => Navigator.pushNamed(context, Rotas.listar_revisao),
               ),
             ),
             Card(
               child: ListTile(
-                title: const Text('Cadastrar Revisão', style: TextStyle(color: Colors.white)),
+                title: const Text('Cadastrar Revisão',
+                    style: TextStyle(color: Colors.white)),
                 trailing: Icon(Icons.add_box, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_revisao),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_revisao),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Marcas',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.branding_watermark, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_marca_veiculo),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Marca',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.add_business, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_marca_veiculo),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Fornecedores',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.business, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_fornecedor),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Fornecedor',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.add_business, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_fornecedor),
               ),
             ),
           ],
