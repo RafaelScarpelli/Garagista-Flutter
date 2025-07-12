@@ -49,7 +49,11 @@ class _TelaListaAgendamentoRevisaoState extends State<TelaListaAgendamentoRevisa
   Future<String> _getVeiculoNome(int carroId) async {
     final dao = DAOVeiculo();
     final veiculo = await dao.consultarPorId(carroId);
-    return veiculo != null ? '${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})' : 'Desconhecido';
+    if (veiculo != null) {
+      final marcaNome = await dao.getMarcaNome(veiculo.marcaId);
+      return '$marcaNome ${veiculo.modelo} (${veiculo.placa})';
+    }
+    return 'Desconhecido';
   }
 
   Future<String> _getRevisaoNome(int revisaoId) async {

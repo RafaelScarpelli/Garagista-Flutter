@@ -204,7 +204,14 @@ class _TelaCadastrarAgendamentoRevisaoState extends State<TelaCadastrarAgendamen
                   items: _veiculos
                       .map((veiculo) => DropdownMenuItem(
                             value: veiculo,
-                            child: Text('${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})'),
+                            child: FutureBuilder<String>(
+                              future: DAOVeiculo().getMarcaNome(veiculo.marcaId),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  '${snapshot.data ?? 'Carregando...'} ${veiculo.modelo} (${veiculo.placa})',
+                                );
+                              },
+                            ),
                           ))
                       .toList(),
                   onChanged: (value) => setState(() => _veiculoSelecionado = value),

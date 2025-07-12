@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_veiculo.dart';
+import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_marca_veiculo.dart';
+import 'package:projeto_ddm/projeto/dto/marca.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
 
@@ -14,16 +16,18 @@ class TelaCadastrarVeiculo extends StatefulWidget {
 
 class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
   final _formKey = GlobalKey<FormState>();
-  final _marcaController = TextEditingController();
   final _modeloController = TextEditingController();
   final _anoController = TextEditingController();
-  final _corController = TextEditingController();
   final _quilometragemController = TextEditingController();
   final _valorVendaController = TextEditingController();
   final _valorAluguelDiaController = TextEditingController();
   final _placaController = TextEditingController();
+  MarcaVeiculo? _marcaSelecionada;
+  String? _corSelecionada;
   String? _tipoSelecionado;
   String? _statusSelecionado;
+  List<MarcaVeiculo> _marcas = [];
+  bool _isLoading = true;
 
   final _placaFormatter = MaskTextInputFormatter(
     mask: 'AAA-####',
@@ -42,15 +46,14 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
 
   final _tipoOpcoes = ['Venda', 'Aluguel', 'Ambos'];
   final _statusOpcoes = ['disponível', 'vendido', 'alugado', 'revisão'];
+  final _corOpcoes = ['Branco', 'Preto', 'Prata', 'Azul', 'Vermelho'];
 
   @override
   void initState() {
     super.initState();
     if (widget.veiculo != null) {
-      _marcaController.text = widget.veiculo!.marca;
       _modeloController.text = widget.veiculo!.modelo;
       _anoController.text = widget.veiculo!.ano.toString();
-      _corController.text = widget.veiculo!.cor;
       _quilometragemController.text = widget.veiculo!.quilometragem.toString();
       _valorVendaController.text = widget.veiculo!.valorVenda.toString();
       _valorAluguelDiaController.text =
@@ -58,15 +61,41 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
       _placaController.text = widget.veiculo!.placa;
       _tipoSelecionado = widget.veiculo!.tipo;
       _statusSelecionado = widget.veiculo!.status;
+      _corSelecionada = widget.veiculo!.cor;
+    }
+    _carregarMarcas();
+  }
+
+  Future<void> _carregarMarcas() async {
+    try {
+      final dao = DAOMarcaVeiculo();
+      final marcas = await dao.consultarTodos();
+      setState(() {
+        _marcas = marcas;
+        if (widget.veiculo != null && marcas.isNotEmpty) {
+          _marcaSelecionada = marcas.firstWhere(
+            (m) => m.id == widget.veiculo!.marcaId,
+            orElse: () => marcas.first,
+          );
+        }
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao carregar marcas: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
   @override
   void dispose() {
-    _marcaController.dispose();
     _modeloController.dispose();
     _anoController.dispose();
-    _corController.dispose();
     _quilometragemController.dispose();
     _valorVendaController.dispose();
     _valorAluguelDiaController.dispose();
@@ -79,10 +108,10 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
       try {
         final veiculo = Veiculo(
           id: widget.veiculo?.id,
-          marca: _marcaController.text.trim(),
+          marcaId: _marcaSelecionada!.id!,
           modelo: _modeloController.text.trim(),
           ano: int.parse(_anoController.text),
-          cor: _corController.text.trim(),
+          cor: _corSelecionada!,
           quilometragem: double.parse(_quilometragemController.text),
           tipo: _tipoSelecionado!,
           valorVenda: double.parse(_valorVendaController.text),
@@ -128,6 +157,17 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading || _marcas.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+              widget.veiculo == null ? 'Cadastrar Veículo' : 'Editar Veículo'),
+          backgroundColor: Colors.green[600],
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Theme(
       data: ThemeData.dark().copyWith(
         primaryColor: Colors.green[600],
@@ -167,11 +207,17 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextFormField(
-                  controller: _marcaController,
+                DropdownButtonFormField<MarcaVeiculo>(
+                  value: _marcaSelecionada,
                   decoration: const InputDecoration(labelText: 'Marca'),
-                  validator: (value) =>
-                      value!.trim().isEmpty ? 'Informe a marca' : null,
+                  items: _marcas
+                      .map((marca) => DropdownMenuItem(
+                            value: marca,
+                            child: Text(marca.nome),
+                          ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _marcaSelecionada = value),
+                  validator: (value) => value == null ? 'Selecione a marca' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -196,11 +242,17 @@ class _TelaCadastrarVeiculoState extends State<TelaCadastrarVeiculo> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  controller: _corController,
+                DropdownButtonFormField<String>(
+                  value: _corSelecionada,
                   decoration: const InputDecoration(labelText: 'Cor'),
-                  validator: (value) =>
-                      value!.trim().isEmpty ? 'Informe a cor' : null,
+                  items: _corOpcoes
+                      .map((cor) => DropdownMenuItem(
+                            value: cor,
+                            child: Text(cor),
+                          ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _corSelecionada = value),
+                  validator: (value) => value == null ? 'Selecione a cor' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(

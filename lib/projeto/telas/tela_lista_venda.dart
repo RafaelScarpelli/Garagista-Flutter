@@ -44,7 +44,8 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
     for (final id in veiculoIds) {
       final veiculo = await dao.consultarPorId(id);
       if (veiculo != null) {
-        nomes.add('${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})');
+        final marcaNome = await dao.getMarcaNome(veiculo.marcaId);
+        nomes.add('$marcaNome ${veiculo.modelo} (${veiculo.placa})');
       }
     }
     return nomes.join(', ');
@@ -139,9 +140,6 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
           ),
         );
       }
-
-      print(
-          'Erro no try Cliente ID: ${venda.clienteId}, Veículo IDs: ${venda.veiculoIds}');
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -232,8 +230,7 @@ class _TelaListaVendaState extends State<TelaListaVenda> {
                         if (value == 'editar') {
                           _editarVenda(venda);
                         } else if (value == 'excluir') {
-                          _excluirVenda(
-                              venda.id!);
+                          _excluirVenda(venda.id!);
                         }
                       },
                       itemBuilder: (context) => [

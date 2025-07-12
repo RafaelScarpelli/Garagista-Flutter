@@ -110,12 +110,17 @@ class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
                   color: Colors.grey[850],
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
-                    title: Text(
-                      '${veiculo.marca} ${veiculo.modelo}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    title: FutureBuilder<String>(
+                      future: DAOVeiculo().getMarcaNome(veiculo.marcaId),
+                      builder: (context, snapshot) {
+                        return Text(
+                          '${snapshot.data ?? 'Carregando...'} ${veiculo.modelo}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
                     subtitle: Text(
                       'Placa: ${veiculo.placa} | Status: ${veiculo.status}',
@@ -136,7 +141,8 @@ class _TelaListaVeiculosState extends State<TelaListaVeiculos> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TelaCadastrarVeiculo(veiculo: veiculo),
+                                  builder: (context) =>
+                                      TelaCadastrarVeiculo(veiculo: veiculo),
                                 ),
                               );
                             } else if (value == 'excluir') {

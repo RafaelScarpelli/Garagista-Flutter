@@ -1,6 +1,6 @@
 class Veiculo {
   int? id;
-  String marca;
+  int marcaId;
   String modelo;
   int ano;
   String cor;
@@ -14,7 +14,7 @@ class Veiculo {
 
   Veiculo({
     this.id,
-    required this.marca,
+    required this.marcaId,
     required this.modelo,
     required this.ano,
     required this.cor,

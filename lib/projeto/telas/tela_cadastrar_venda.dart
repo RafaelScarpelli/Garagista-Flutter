@@ -295,8 +295,14 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
                   items: _veiculos
                       .map((veiculo) => DropdownMenuItem(
                             value: veiculo,
-                            child: Text(
-                                '${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})'),
+                            child: FutureBuilder<String>(
+                              future: DAOVeiculo().getMarcaNome(veiculo.marcaId),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  '${snapshot.data ?? 'Carregando...'} ${veiculo.modelo} (${veiculo.placa})',
+                                );
+                              },
+                            ),
                           ))
                       .toList(),
                   onChanged: (veiculo) {
@@ -322,9 +328,14 @@ class _TelaCadastrarVendaState extends State<TelaCadastrarVenda> {
                           .asMap()
                           .entries
                           .map((entry) => ListTile(
-                                title: Text(
-                                  '${entry.value.marca} ${entry.value.modelo} (${entry.value.placa})',
-                                  style: const TextStyle(color: Colors.white),
+                                title: FutureBuilder<String>(
+                                  future: DAOVeiculo().getMarcaNome(entry.value.marcaId),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      '${snapshot.data ?? 'Carregando...'} ${entry.value.modelo} (${entry.value.placa})',
+                                      style: const TextStyle(color: Colors.white),
+                                    );
+                                  },
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.remove_circle,

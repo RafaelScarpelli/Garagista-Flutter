@@ -57,7 +57,11 @@ class _TelaListaAluguelState extends State<TelaListaAluguel> {
   Future<String> _getVeiculoNome(int veiculoId) async {
     final dao = DAOVeiculo();
     final veiculo = await dao.consultarPorId(veiculoId);
-    return veiculo != null ? '${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})' : 'Desconhecido';
+    if (veiculo != null) {
+      final marcaNome = await dao.getMarcaNome(veiculo.marcaId);
+      return '$marcaNome ${veiculo.modelo} (${veiculo.placa})';
+    }
+    return 'Desconhecido';
   }
 
   Future<void> _excluirAluguel(int aluguelId) async {

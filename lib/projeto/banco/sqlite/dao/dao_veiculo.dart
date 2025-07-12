@@ -4,16 +4,21 @@ import 'package:sqflite/sqflite.dart';
 
 class DAOVeiculo {
   final String _sqlSalvar = '''
-    INSERT OR REPLACE INTO veiculo (id, marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+    INSERT OR REPLACE INTO veiculo (id, marca_id, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ''';
 
   final String _sqlConsultarTodos = '''
-    SELECT * FROM veiculo
+    SELECT v.*, m.nome AS marca_nome 
+    FROM veiculo v 
+    JOIN marca_veiculo m ON v.marca_id = m.id
   ''';
 
   final String _sqlConsultarPorId = '''
-    SELECT * FROM veiculo WHERE id = ?
+    SELECT v.*, m.nome AS marca_nome 
+    FROM veiculo v 
+    JOIN marca_veiculo m ON v.marca_id = m.id 
+    WHERE v.id = ?
   ''';
 
   final String _sqlExcluir = '''
@@ -22,7 +27,7 @@ class DAOVeiculo {
 
   final String _sqlAtualizar = '''
     UPDATE veiculo SET
-      marca = ?, modelo = ?, ano = ?, cor = ?, quilometragem = ?,
+      marca_id = ?, modelo = ?, ano = ?, cor = ?, quilometragem = ?,
       tipo = ?, valor_venda = ?, valor_aluguel_dia = ?, status = ?,
       data_cadastro = ?, placa = ?
     WHERE id = ?
@@ -31,7 +36,7 @@ class DAOVeiculo {
   Future<Veiculo> _fromMap(Map<String, dynamic> map) async {
     return Veiculo(
       id: map['id'],
-      marca: map['marca'] as String,
+      marcaId: map['marca_id'] as int,
       modelo: map['modelo'] as String,
       ano: map['ano'] as int,
       cor: map['cor'] as String,
@@ -48,7 +53,7 @@ class DAOVeiculo {
   Map<String, dynamic> _toMap(Veiculo veiculo) {
     return {
       'id': veiculo.id,
-      'marca': veiculo.marca,
+      'marca_id': veiculo.marcaId,
       'modelo': veiculo.modelo,
       'ano': veiculo.ano,
       'cor': veiculo.cor,
@@ -67,7 +72,7 @@ class DAOVeiculo {
     try {
       await db.rawInsert(_sqlSalvar, [
         veiculo.id,
-        veiculo.marca,
+        veiculo.marcaId,
         veiculo.modelo,
         veiculo.ano,
         veiculo.cor,
@@ -88,7 +93,7 @@ class DAOVeiculo {
     final db = await Conexao.get();
     try {
       await db.rawUpdate(_sqlAtualizar, [
-        veiculo.marca,
+        veiculo.marcaId,
         veiculo.modelo,
         veiculo.ano,
         veiculo.cor,
@@ -128,6 +133,19 @@ class DAOVeiculo {
       return null;
     } catch (e) {
       throw Exception('Erro ao consultar veículo por ID: $e');
+    }
+  }
+
+  Future<String> getMarcaNome(int marcaId) async {
+    final db = await Conexao.get();
+    try {
+      final List<Map<String, dynamic>> maps = await db.rawQuery(
+        'SELECT nome FROM marca_veiculo WHERE id = ?',
+        [marcaId],
+      );
+      return maps.isNotEmpty ? maps.first['nome'] as String : 'Desconhecida';
+    } catch (e) {
+      throw Exception('Erro ao consultar nome da marca: $e');
     }
   }
 

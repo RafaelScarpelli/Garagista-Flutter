@@ -1,7 +1,7 @@
 final _veiculo = '''
 CREATE TABLE veiculo (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    marca TEXT NOT NULL,
+    marca_id INTEGER NOT NULL,
     modelo TEXT NOT NULL,
     ano INTEGER NOT NULL,
     cor TEXT NOT NULL,
@@ -11,7 +11,8 @@ CREATE TABLE veiculo (
     valor_aluguel_dia REAL NOT NULL,
     status TEXT NOT NULL,
     data_cadastro TEXT NOT NULL,
-    placa TEXT NOT NULL
+    placa TEXT NOT NULL,
+    FOREIGN KEY (marca_id) REFERENCES marca_veiculo(id)
 );
 ''';
 
@@ -117,6 +118,7 @@ CREATE TABLE venda_peca (
     FOREIGN KEY (peca_id) REFERENCES peca(id) 
 ); 
 ''';
+
 final _agendamento_revisao = ''' 
 CREATE TABLE agendamento_revisao ( 
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -146,16 +148,16 @@ final criarTabelas = [
 
 final insertVeiculos = [
   '''
-  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
-  VALUES ('Toyota', 'Corolla', 2020, 'Prata', 35000.0, 'Venda', 90000.0, 0.0, 'vendido', '2025-01-10T00:00:00.000', 'ABC-1234')
+  INSERT INTO veiculo (marca_id, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES (1, 'Corolla', 2020, 'Prata', 35000.0, 'Venda', 90000.0, 0.0, 'vendido', '2025-01-10T00:00:00.000', 'ABC-1234')
   ''',
   '''
-  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
-  VALUES ('Honda', 'Civic', 2019, 'Preto', 45000.0, 'Aluguel', 0.0, 200.0, 'disponível', '2025-02-15T00:00:00.000', 'DEF-5678')
+  INSERT INTO veiculo (marca_id, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES (2, 'Civic', 2019, 'Preto', 45000.0, 'Aluguel', 0.0, 200.0, 'disponível', '2025-02-15T00:00:00.000', 'DEF-5678')
   ''',
   '''
-  INSERT INTO veiculo (marca, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
-  VALUES ('Ford', 'Focus', 2018, 'Azul', 60000.0, 'Ambos', 75000.0, 150.0, 'disponível', '2025-03-20T00:00:00.000', 'GHI-9012')
+  INSERT INTO veiculo (marca_id, modelo, ano, cor, quilometragem, tipo, valor_venda, valor_aluguel_dia, status, data_cadastro, placa)
+  VALUES (3, 'Focus', 2018, 'Azul', 60000.0, 'Ambos', 75000.0, 150.0, 'disponível', '2025-03-20T00:00:00.000', 'GHI-9012')
   ''',
 ];
 

@@ -102,8 +102,8 @@ class _TelaCadastrarAluguelState extends State<TelaCadastrarAluguel> {
         } else {
           _veiculos = allVeiculos.where((v) => v.status == 'disponível').toList();
         }
-        print('Veículos carregados: ${_veiculos.map((v) => '${v.marca} (${v.placa}) - Status: ${v.status}').join(', ')}');
-        print('Veículo selecionado: ${_veiculoSelecionado?.marca ?? 'Nenhum'}');
+        print('Veículos carregados: ${_veiculos.map((v) => '${v.marcaId} ${v.modelo} (${v.placa}) - Status: ${v.status}').join(', ')}');
+        print('Veículo selecionado: ${_veiculoSelecionado?.marcaId ?? 'Nenhum'}');
       });
     } catch (e) {
       if (mounted) {
@@ -303,7 +303,14 @@ class _TelaCadastrarAluguelState extends State<TelaCadastrarAluguel> {
                   items: _veiculos
                       .map((veiculo) => DropdownMenuItem(
                             value: veiculo,
-                            child: Text('${veiculo.marca} ${veiculo.modelo} (${veiculo.placa})'),
+                            child: FutureBuilder<String>(
+                              future: DAOVeiculo().getMarcaNome(veiculo.marcaId),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  '${snapshot.data ?? 'Carregando...'} ${veiculo.modelo} (${veiculo.placa})',
+                                );
+                              },
+                            ),
                           ))
                       .toList(),
                   onChanged: (value) => setState(() => _veiculoSelecionado = value),
@@ -313,7 +320,6 @@ class _TelaCadastrarAluguelState extends State<TelaCadastrarAluguel> {
                     }
                     return value == null ? 'Selecione um veículo' : null;
                   },
-                  //debug
                   onTap: () {
                     print('Dropdown de veículo clicado. Itens disponíveis: ${_veiculos.length}');
                   },
