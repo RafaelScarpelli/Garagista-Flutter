@@ -9,8 +9,8 @@ Cadastro simples – 1 ponto cada (máximo de 5 pts)\
 Cadastro com associação (1:N) – 3 pontos cada\
 	- Cliente x Venda\
 	- Cadastro de Observação
-
-	* Cadastro de peças
+	- Cadastro de peças
+	
 	* Cadastro de veiculo
 	* Agendamento de Revisão
 

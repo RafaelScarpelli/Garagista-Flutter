@@ -97,6 +97,27 @@ CREATE TABLE fornecedor (
 ); 
 ''';
 
+final _peca = ''' 
+CREATE TABLE peca ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    nome TEXT NOT NULL, 
+    marca_id INTEGER NOT NULL, 
+    preco_unitario REAL NOT NULL, 
+    quantidade INTEGER NOT NULL, 
+    FOREIGN KEY (marca_id) REFERENCES marca_veiculo(id) 
+); 
+''';
+
+final _venda_peca = ''' 
+CREATE TABLE venda_peca ( 
+    venda_id INTEGER NOT NULL, 
+    peca_id INTEGER NOT NULL, 
+    PRIMARY KEY (venda_id, peca_id), 
+    FOREIGN KEY (venda_id) REFERENCES venda(id), 
+    FOREIGN KEY (peca_id) REFERENCES peca(id) 
+); 
+''';
+
 final criarTabelas = [
   _veiculo,
   _cliente,
@@ -107,6 +128,8 @@ final criarTabelas = [
   _revisao,
   _marca_veiculo,
   _fornecedor,
+  _peca,
+  _venda_peca,
 ];
 
 final insertVeiculos = [

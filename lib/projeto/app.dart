@@ -5,6 +5,7 @@ import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_fornecedor.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_marca.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_peca.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
@@ -14,6 +15,7 @@ import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_marca.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_peca.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
@@ -106,6 +108,8 @@ class MyApp extends StatelessWidget {
         Rotas.cadastrar_marca_veiculo: (context) => TelaCadastrarMarcaVeiculo(),
         Rotas.listar_fornecedor: (context) => TelaListaFornecedor(),
         Rotas.cadastrar_fornecedor: (context) => TelaCadastrarFornecedor(),
+        Rotas.listar_peca: (context) => TelaListaPeca(),
+        Rotas.cadastrar_peca: (context) => TelaCadastrarPeca(),
       },
     );
   }

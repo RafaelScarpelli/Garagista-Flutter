@@ -17,4 +17,6 @@ class Rotas {
   static const String cadastrar_marca_veiculo = '/cadastrar_marca_veiculo';
   static const String listar_fornecedor = '/listar_fornecedor';
   static const String cadastrar_fornecedor = '/cadastrar_fornecedor';
+  static const String listar_peca = '/listar_peca';
+  static const String cadastrar_peca = '/cadastrar_peca';
 }

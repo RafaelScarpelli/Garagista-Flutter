@@ -176,6 +176,22 @@ class MenuPrincipalPage extends StatelessWidget {
                     Navigator.pushNamed(context, Rotas.cadastrar_fornecedor),
               ),
             ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Peças',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.build_circle, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.listar_peca),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Peça',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.add_circle, color: Colors.green[600]),
+                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_peca),
+              ),
+            ),
           ],
         ),
       ),
