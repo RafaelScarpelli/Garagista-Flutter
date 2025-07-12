@@ -11,8 +11,7 @@ Cadastro com associação (1:N) – 3 pontos cada\
 	- Cadastro de Observação
 	- Cadastro de peças
 	- Agendamento de Revisão
-	
-	* Cadastro de veiculo
+	- Cadastro de veiculo
 
 Cadastro associativa (N:N) – 6 pontos cada\
 	- Cliente × Veículo via Aluguel. O Aluguel é a tabela intermediaria entre Cliente e veículo
