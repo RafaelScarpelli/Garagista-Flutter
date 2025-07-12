@@ -192,6 +192,24 @@ class MenuPrincipalPage extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_peca),
               ),
             ),
+            Card(
+              child: ListTile(
+                title: const Text('Listar Agendamentos de Revisão',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.event, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.listar_agendamento_revisao),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Cadastrar Agendamento de Revisão',
+                    style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.add_alarm_outlined, color: Colors.green[600]),
+                onTap: () =>
+                    Navigator.pushNamed(context, Rotas.cadastrar_agendamento_revisao),
+              ),
+            ),
           ],
         ),
       ),

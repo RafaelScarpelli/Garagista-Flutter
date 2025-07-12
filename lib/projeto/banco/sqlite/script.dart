@@ -117,6 +117,17 @@ CREATE TABLE venda_peca (
     FOREIGN KEY (peca_id) REFERENCES peca(id) 
 ); 
 ''';
+final _agendamento_revisao = ''' 
+CREATE TABLE agendamento_revisao ( 
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    carro_id INTEGER NOT NULL, 
+    revisao_id INTEGER NOT NULL, 
+    data TEXT NOT NULL, 
+    descricao TEXT NOT NULL, 
+    FOREIGN KEY (carro_id) REFERENCES veiculo(id), 
+    FOREIGN KEY (revisao_id) REFERENCES revisao(id) 
+); 
+''';
 
 final criarTabelas = [
   _veiculo,
@@ -130,6 +141,7 @@ final criarTabelas = [
   _fornecedor,
   _peca,
   _venda_peca,
+  _agendamento_revisao,
 ];
 
 final insertVeiculos = [
@@ -182,4 +194,22 @@ final insertMarcasVeiculo = [
 final insertFornecedores = [
   ''' INSERT INTO fornecedor (nome, cpf, telefone, email, data_cadastro) VALUES ('Auto Peças Silva', '111.222.333-44', '(11) 99876-5432', 'auto.pecas@email.com', '2025-03-10T00:00:00.000') ''',
   ''' INSERT INTO fornecedor (nome, cpf, telefone, email, data_cadastro) VALUES ('Distribuidora Santos', '555.666.777-88', '(21) 91234-5678', 'dist.santos@email.com', '2025-04-15T00:00:00.000') ''',
+];
+
+final insertPecas = [
+  ''' INSERT INTO peca (nome, marca_id, preco_unitario, quantidade) VALUES ('Filtro de Óleo', 1, 50.0, 10) ''',
+  ''' INSERT INTO peca (nome, marca_id, preco_unitario, quantidade) VALUES ('Pastilha de Freio', 2, 120.0, 5) ''',
+];
+
+final insertVendaPeca = [
+  ''' INSERT INTO venda_peca (venda_id, peca_id) VALUES (1, 1) ''',
+];
+
+final insertRevisoes = [
+  ''' INSERT INTO revisao (tipo, oficina) VALUES ('Motor', 'Oficina Central') ''',
+  ''' INSERT INTO revisao (tipo, oficina) VALUES ('Funilaria', 'Oficina Norte') ''',
+];
+
+final insertAgendamentosRevisao = [
+  ''' INSERT INTO agendamento_revisao (carro_id, revisao_id, data, descricao) VALUES (2, 1, '2025-05-10T00:00:00.000', 'Revisão programada para o Honda Civic') ''',
 ];

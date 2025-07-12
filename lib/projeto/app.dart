@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/rotas.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_agendamento_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_aluguel.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_fornecedor.dart';
@@ -10,6 +11,7 @@ import 'package:projeto_ddm/projeto/telas/tela_cadastrar_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_dashboard.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_agendamento_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
 import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
@@ -110,6 +112,8 @@ class MyApp extends StatelessWidget {
         Rotas.cadastrar_fornecedor: (context) => TelaCadastrarFornecedor(),
         Rotas.listar_peca: (context) => TelaListaPeca(),
         Rotas.cadastrar_peca: (context) => TelaCadastrarPeca(),
+        Rotas.listar_agendamento_revisao: (context) => TelaListaAgendamentoRevisao(),
+        Rotas.cadastrar_agendamento_revisao: (context) => TelaCadastrarAgendamentoRevisao(),
       },
     );
   }

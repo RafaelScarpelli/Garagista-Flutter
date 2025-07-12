@@ -47,6 +47,18 @@ class Conexao {
           for (final insert in insertFornecedores) {
             await db.execute(insert);
           }
+          for (final insert in insertPecas) {
+            await db.execute(insert);
+          }
+          for (final insert in insertVendaPeca) {
+            await db.execute(insert);
+          }
+          for (final insert in insertRevisoes) {
+            await db.execute(insert);
+          }
+          for (final insert in insertAgendamentosRevisao) {
+            await db.execute(insert);
+          }
         },
       );
 

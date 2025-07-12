@@ -19,4 +19,6 @@ class Rotas {
   static const String cadastrar_fornecedor = '/cadastrar_fornecedor';
   static const String listar_peca = '/listar_peca';
   static const String cadastrar_peca = '/cadastrar_peca';
+  static const String listar_agendamento_revisao = '/listar_agendamento_revisao';
+  static const String cadastrar_agendamento_revisao = '/cadastrar_agendamento_revisao';
 }
