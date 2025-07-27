@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_marca_veiculo.dart';
 import 'package:projeto_ddm/projeto/dto/marca.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_marca.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TelaListaMarcaVeiculo extends StatefulWidget {
   const TelaListaMarcaVeiculo({super.key});
@@ -68,6 +69,28 @@ class _TelaListaMarcaVeiculoState extends State<TelaListaMarcaVeiculo> {
     }
   }
 
+  Future<void> _launchURL(String url) async {
+    if (url.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nenhum site oficial disponível para esta marca'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Não foi possível abrir o link: $url'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   void _editarMarca(MarcaVeiculo marca) {
     Navigator.push(
       context,
@@ -116,23 +139,31 @@ class _TelaListaMarcaVeiculoState extends State<TelaListaMarcaVeiculo> {
                   'Site: ${marca.site_oficial}',
                   style: const TextStyle(color: Colors.white70),
                 ),
-                trailing: PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'editar') {
-                      _editarMarca(marca);
-                    } else if (value == 'excluir') {
-                      _excluirMarca(marca.id!);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'editar',
-                      child: Text('Editar'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.link, color: Colors.green[600]),
+                      onPressed: () => _launchURL(marca.site_oficial),
                     ),
-                    const PopupMenuItem(
-                      value: 'excluir',
-                      child:
-                          Text('Excluir', style: TextStyle(color: Colors.red)),
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'editar') {
+                          _editarMarca(marca);
+                        } else if (value == 'excluir') {
+                          _excluirMarca(marca.id!);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'editar',
+                          child: Text('Editar'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'excluir',
+                          child: Text('Excluir', style: TextStyle(color: Colors.red)),
+                        ),
+                      ],
                     ),
                   ],
                 ),
