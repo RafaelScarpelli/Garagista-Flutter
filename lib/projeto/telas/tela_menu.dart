@@ -1,7 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ddm/projeto/rotas.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_aluguel.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_agendamento_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_marca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_fornecedor.dart';
+import 'package:projeto_ddm/projeto/telas/tela_cadastrar_peca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_agendamento_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_marca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
+import 'package:projeto_ddm/projeto/telas/tela_lista_peca.dart';
 
-class MenuPrincipalPage extends StatelessWidget {
+class TelaMenuPrincipal extends StatefulWidget {
+  const TelaMenuPrincipal({super.key});
+
+  @override
+  State<TelaMenuPrincipal> createState() => _TelaMenuPrincipalState();
+}
+
+class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -13,205 +47,380 @@ class MenuPrincipalPage extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.grey[900],
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey[850],
+          backgroundColor: Colors.green[600],
           foregroundColor: Colors.white,
-          elevation: 4,
         ),
-        cardTheme: CardThemeData(
-          color: Colors.grey[800],
-          elevation: 4,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green[600],
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            alignment: Alignment.centerLeft,
+          ),
         ),
       ),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Menu Principal')),
-        body: ListView(
+        appBar: AppBar(
+          title: const Text('Menu Principal'),
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(16.0),
-          children: [
-            Card(
-              child: ListTile(
-                title: const Text('Listar Veículos',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.directions_car, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_veiculos),
-              ),
+          child: _selectedIndex == 0 ? _buildCadastros() : _buildListagens(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.green[600],
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.white70,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle),
+              label: 'Cadastros',
             ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Veículo',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_circle, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_veiculo),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Clientes',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.person, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_clientes),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Cliente',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.person_add, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_cliente),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Vendas',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.shopping_cart, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_vendas),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Venda',
-                    style: TextStyle(color: Colors.white)),
-                trailing:
-                    Icon(Icons.add_shopping_cart, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_venda),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Aluguéis',
-                    style: TextStyle(color: Colors.white)),
-                trailing:
-                    Icon(Icons.car_rental_outlined, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_aluguel),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Aluguel',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.app_registration_outlined,
-                    color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_aluguel),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Observações',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.assignment_ind_rounded,
-                    color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_observacao),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Observação',
-                    style: TextStyle(color: Colors.white)),
-                trailing:
-                    Icon(Icons.announcement_rounded, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_observacao),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Revisões',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.build, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_revisao),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Revisão',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_box, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_revisao),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Marcas',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.branding_watermark, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_marca_veiculo),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Marca',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_business, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_marca_veiculo),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Fornecedores',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.business, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_fornecedor),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Fornecedor',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_business, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_fornecedor),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Peças',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.build_circle, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.listar_peca),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Peça',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_circle, color: Colors.green[600]),
-                onTap: () => Navigator.pushNamed(context, Rotas.cadastrar_peca),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Listar Agendamentos de Revisão',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.event, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.listar_agendamento_revisao),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Cadastrar Agendamento de Revisão',
-                    style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.add_alarm_outlined, color: Colors.green[600]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Rotas.cadastrar_agendamento_revisao),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Listagens',
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCadastros() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Cadastros',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarVeiculo()),
+              );
+            },
+            icon: const Icon(Icons.directions_car),
+            label: const Text(
+              'Cadastrar Veículo',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarCliente()),
+              );
+            },
+            icon: const Icon(Icons.person_add),
+            label: const Text(
+              'Cadastrar Cliente',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarRevisao()),
+              );
+            },
+            icon: const Icon(Icons.build),
+            label: const Text(
+              'Cadastrar Revisão',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarAluguel()),
+              );
+            },
+            icon: const Icon(Icons.car_rental),
+            label: const Text(
+              'Cadastrar Aluguel',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarVenda()),
+              );
+            },
+            icon: const Icon(Icons.shopping_cart),
+            label: const Text(
+              'Cadastrar Venda',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const TelaCadastrarAgendamentoRevisao()),
+              );
+            },
+            icon: const Icon(Icons.schedule),
+            label: const Text(
+              'Cadastrar Agendamento de Revisão',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarObservacao()),
+              );
+            },
+            icon: const Icon(Icons.note_add),
+            label: const Text(
+              'Cadastrar Observação',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarMarcaVeiculo()),
+              );
+            },
+            icon: const Icon(Icons.branding_watermark),
+            label: const Text(
+              'Cadastrar Marca',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarFornecedor()),
+              );
+            },
+            icon: const Icon(Icons.business),
+            label: const Text(
+              'Cadastrar Fornecedor',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaCadastrarPeca()),
+              );
+            },
+            icon: const Icon(Icons.build_circle),
+            label: const Text(
+              'Cadastrar Peça',
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListagens() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Listagens',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaVeiculos()),
+              );
+            },
+            icon: const Icon(Icons.list_alt),
+            label: const Text(
+              'Listar Veículos',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaClientes()),
+              );
+            },
+            icon: const Icon(Icons.people),
+            label: const Text(
+              'Listar Clientes',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TelaListaRevisao()),
+              );
+            },
+            icon: const Icon(Icons.build_circle),
+            label: const Text(
+              'Listar Revisões',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TelaListaAluguel()),
+              );
+            },
+            icon: const Icon(Icons.car_rental),
+            label: const Text(
+              'Listar Aluguéis',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TelaListaVenda()),
+              );
+            },
+            icon: const Icon(Icons.receipt),
+            label: const Text(
+              'Listar Vendas',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaAgendamentoRevisao()),
+              );
+            },
+            icon: const Icon(Icons.event),
+            label: const Text(
+              'Listar Agendamentos de Revisão',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaObservacao()),
+              );
+            },
+            icon: const Icon(Icons.notes),
+            label: const Text(
+              'Listar Observações',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaMarcaVeiculo()),
+              );
+            },
+            icon: const Icon(Icons.branding_watermark),
+            label: const Text(
+              'Listar Marcas',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaFornecedor()),
+              );
+            },
+            icon: const Icon(Icons.business),
+            label: const Text(
+              'Listar Fornecedores',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaPeca()),
+              );
+            },
+            icon: const Icon(Icons.build_circle),
+            label: const Text(
+              'Listar Peças',
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ],
       ),
     );
   }

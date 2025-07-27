@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Rotas.dashboard,
       routes: {
         Rotas.dashboard: (context) => DashboardPage(),
-        Rotas.menu: (context) => MenuPrincipalPage(),
+        Rotas.menu: (context) => TelaMenuPrincipal(),
         Rotas.listar_veiculos: (context) => TelaListaVeiculos(),
         Rotas.cadastrar_veiculo: (context) => TelaCadastrarVeiculo(),
         Rotas.listar_clientes: (context) => TelaListaClientes(),
