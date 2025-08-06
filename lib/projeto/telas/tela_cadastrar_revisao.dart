@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_revisao.dart';
 import 'package:projeto_ddm/projeto/dto/revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_revisao.dart';
 
 class TelaCadastrarRevisao extends StatefulWidget {
   final Revisao? revisao;

@@ -3,7 +3,7 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_cliente.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_observacao.dart';
 import 'package:projeto_ddm/projeto/dto/cliente.dart';
 import 'package:projeto_ddm/projeto/dto/observacao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_observacao.dart';
 
 class TelaCadastrarObservacao extends StatefulWidget {
   final Observacao? observacao;

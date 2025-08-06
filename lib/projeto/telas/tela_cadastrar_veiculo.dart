@@ -4,7 +4,7 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_veiculo.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_marca_veiculo.dart';
 import 'package:projeto_ddm/projeto/dto/marca.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_veiculos.dart';
 
 class TelaCadastrarVeiculo extends StatefulWidget {
   final Veiculo? veiculo;

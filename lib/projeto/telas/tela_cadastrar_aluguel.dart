@@ -6,7 +6,7 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_aluguel.dart';
 import 'package:projeto_ddm/projeto/dto/aluguel.dart';
 import 'package:projeto_ddm/projeto/dto/cliente.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_aluguel.dart';
 
 class TelaCadastrarAluguel extends StatefulWidget {
   final Aluguel? aluguel;

@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_cliente.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_aluguel.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_agendamento_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_observacao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_marca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_fornecedor.dart';
-import 'package:projeto_ddm/projeto/telas/tela_cadastrar_peca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_agendamento_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_marca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_peca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_veiculos.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_agendamento_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_marca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_fornecedor.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_peca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_revisao.dart';
 
 class TelaMenuPrincipal extends StatefulWidget {
   const TelaMenuPrincipal({super.key});
@@ -68,7 +63,11 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _selectedIndex == 0 ? _buildCadastros() : _buildListagens(),
+          child: _selectedIndex == 0
+              ? _buildCadastros()
+              : _selectedIndex == 1
+                  ? _buildListagens()
+                  : _buildOutros(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.green[600],
@@ -84,6 +83,10 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
               label: 'Listagens',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz),
+              label: 'Outros',
             ),
           ],
         ),
@@ -140,21 +143,6 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const TelaCadastrarRevisao()),
-              );
-            },
-            icon: const Icon(Icons.build),
-            label: const Text(
-              'Cadastrar Revisão',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
                     builder: (context) => const TelaCadastrarAluguel()),
               );
             },
@@ -192,66 +180,6 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
             icon: const Icon(Icons.schedule),
             label: const Text(
               'Cadastrar Agendamento de Revisão',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TelaCadastrarObservacao()),
-              );
-            },
-            icon: const Icon(Icons.note_add),
-            label: const Text(
-              'Cadastrar Observação',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TelaCadastrarMarcaVeiculo()),
-              );
-            },
-            icon: const Icon(Icons.branding_watermark),
-            label: const Text(
-              'Cadastrar Marca',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TelaCadastrarFornecedor()),
-              );
-            },
-            icon: const Icon(Icons.business),
-            label: const Text(
-              'Cadastrar Fornecedor',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TelaCadastrarPeca()),
-              );
-            },
-            icon: const Icon(Icons.build_circle),
-            label: const Text(
-              'Cadastrar Peça',
               textAlign: TextAlign.left,
             ),
           ),
@@ -308,21 +236,8 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TelaListaRevisao()),
-              );
-            },
-            icon: const Icon(Icons.build_circle),
-            label: const Text(
-              'Listar Revisões',
-              textAlign: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TelaListaAluguel()),
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaAluguel()),
               );
             },
             icon: const Icon(Icons.car_rental),
@@ -358,6 +273,24 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
             label: const Text(
               'Listar Agendamentos de Revisão',
               textAlign: TextAlign.left,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOutros() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Outros',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 16),
@@ -410,13 +343,27 @@ class _TelaMenuPrincipalState extends State<TelaMenuPrincipal> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const TelaListaPeca()),
+                MaterialPageRoute(builder: (context) => const TelaListaPeca()),
               );
             },
             icon: const Icon(Icons.build_circle),
             label: const Text(
               'Listar Peças',
+              textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaListaRevisao()),
+              );
+            },
+            icon: const Icon(Icons.build_circle),
+            label: const Text(
+              'Listar Revisões',
               textAlign: TextAlign.left,
             ),
           ),

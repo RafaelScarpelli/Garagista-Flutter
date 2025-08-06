@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_fornecedor.dart';
 import 'package:projeto_ddm/projeto/dto/fornecedor.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_fornecedor.dart';
 
 class TelaCadastrarFornecedor extends StatefulWidget {
   final Fornecedor? fornecedor;

@@ -11,16 +11,16 @@ import 'package:projeto_ddm/projeto/telas/tela_cadastrar_revisao.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_veiculo.dart';
 import 'package:projeto_ddm/projeto/telas/tela_cadastrar_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_dashboard.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_agendamento_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_aluguel.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_cliente.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_fornecedor.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_marca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_observacao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_peca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_veiculos.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_agendamento_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_aluguel.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_cliente.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_fornecedor.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_marca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_observacao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_peca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_veiculos.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_venda.dart';
 import 'package:projeto_ddm/projeto/telas/tela_menu.dart';
 
 class MyApp extends StatelessWidget {
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        cardTheme: CardThemeData(
+        cardTheme: CardTheme(
           color: Colors.grey[800],
           elevation: 4,
           shape: RoundedRectangleBorder(
@@ -112,8 +112,10 @@ class MyApp extends StatelessWidget {
         Rotas.cadastrar_fornecedor: (context) => TelaCadastrarFornecedor(),
         Rotas.listar_peca: (context) => TelaListaPeca(),
         Rotas.cadastrar_peca: (context) => TelaCadastrarPeca(),
-        Rotas.listar_agendamento_revisao: (context) => TelaListaAgendamentoRevisao(),
-        Rotas.cadastrar_agendamento_revisao: (context) => TelaCadastrarAgendamentoRevisao(),
+        Rotas.listar_agendamento_revisao: (context) =>
+            TelaListaAgendamentoRevisao(),
+        Rotas.cadastrar_agendamento_revisao: (context) =>
+            TelaCadastrarAgendamentoRevisao(),
       },
     );
   }

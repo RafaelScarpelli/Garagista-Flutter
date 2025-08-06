@@ -6,7 +6,7 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_venda.dart';
 import 'package:projeto_ddm/projeto/dto/cliente.dart';
 import 'package:projeto_ddm/projeto/dto/venda.dart';
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_venda.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_venda.dart';
 
 class TelaCadastrarVenda extends StatefulWidget {
   final Venda? venda;

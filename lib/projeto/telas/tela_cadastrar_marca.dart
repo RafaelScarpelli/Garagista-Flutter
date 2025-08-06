@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_marca_veiculo.dart';
 import 'package:projeto_ddm/projeto/dto/marca.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_marca.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_marca.dart';
 
 class TelaCadastrarMarcaVeiculo extends StatefulWidget {
   final MarcaVeiculo? marca;

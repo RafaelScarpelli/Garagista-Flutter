@@ -6,7 +6,7 @@ import 'package:projeto_ddm/projeto/banco/sqlite/dao/dao_agendamento_revisao.dar
 import 'package:projeto_ddm/projeto/dto/veiculo.dart';
 import 'package:projeto_ddm/projeto/dto/revisao.dart';
 import 'package:projeto_ddm/projeto/dto/agendamento_revisao.dart';
-import 'package:projeto_ddm/projeto/telas/tela_lista_agendamento_revisao.dart';
+import 'package:projeto_ddm/projeto/telas/tela_listagem/tela_lista_agendamento_revisao.dart';
 
 class TelaCadastrarAgendamentoRevisao extends StatefulWidget {
   final AgendamentoRevisao? agendamento;
